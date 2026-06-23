@@ -20,7 +20,7 @@
 ```bash
 conda create -n luwu_mjlab python=3.11
 conda activate luwu_mjlab
-git clone https://github.com/LuwuDynamics-RIG/luwu_mjlab.git
+git clone https://github.com/LuwuDynamics/luwu_mjlab.git
 cd luwu_mjlab
 pip install -e .
 ```
@@ -90,6 +90,38 @@ conda create -n luwu_mjlab python=3.11 && conda activate luwu_mjlab
 conda install -c nvidia cuda-toolkit=13.0.2 cudnn
 pip install torch==2.12 torchvision --index-url https://download.pytorch.org/whl/cu130
 cd <项目根目录> && pip install -e .
+```
+
+### Google Colab
+
+Colab 提供免费 T4 GPU，无需本地环境即可运行训练和可视化。
+
+**1. 新建笔记本**
+
+打开 [Google Colab](https://colab.research.google.com/)，运行时类型选择 **T4 GPU**。
+
+也可直接打开已配置好的笔记本： [luwu_mjlab_colab.ipynb](https://colab.research.google.com/drive/1JrrJyGF9LYSPqhgQ5k89SmClbh30MRkM?usp=sharing)
+
+**2. 安装项目**
+
+```python
+!nvidia-smi
+!git clone https://github.com/LuwuDynamics/luwu_mjlab.git
+%cd luwu_mjlab
+!ls
+!pip install -e .
+```
+
+安装完成后，重启运行时（菜单 → 运行时 → 重新启动并执行全部，或快捷键 Ctrl+M .）。
+
+**3. 后台训练 + TensorBoard**
+
+```python
+%cd luwu_mjlab
+!python scripts/train.py XGOMini-Flat --env.scene.num-envs=4096 > output.log 2>&1 &
+
+%load_ext tensorboard
+%tensorboard --logdir ./logs/rsl_rl/xgomini_velocity
 ```
 
 ## 训练

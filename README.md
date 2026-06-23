@@ -20,7 +20,7 @@ Requirements: NVIDIA GPU + driver 550+ + Python 3.11.
 ```bash
 conda create -n luwu_mjlab python=3.11
 conda activate luwu_mjlab
-git clone https://github.com/LuwuDynamics-RIG/luwu_mjlab.git
+git clone https://github.com/LuwuDynamics/luwu_mjlab.git
 cd luwu_mjlab
 pip install -e .
 ```
@@ -92,6 +92,38 @@ conda create -n luwu_mjlab python=3.11 && conda activate luwu_mjlab
 conda install -c nvidia cuda-toolkit=13.0.2 cudnn
 pip install torch==2.12 torchvision --index-url https://download.pytorch.org/whl/cu130
 cd <project_root> && pip install -e .
+```
+
+### Google Colab
+
+Colab provides free T4 GPU — no local setup needed for training and visualization.
+
+**1. New notebook**
+
+Open [Google Colab](https://colab.research.google.com/), set runtime to **T4 GPU**.
+
+Or use the pre-configured notebook: [luwu_mjlab_colab.ipynb](https://colab.research.google.com/drive/1JrrJyGF9LYSPqhgQ5k89SmClbh30MRkM?usp=sharing)
+
+**2. Install**
+
+```python
+!nvidia-smi
+!git clone https://github.com/LuwuDynamics/luwu_mjlab.git
+%cd luwu_mjlab
+!ls
+!pip install -e .
+```
+
+After installation completes, restart the runtime (Runtime → Restart and run all, or Ctrl+M .).
+
+**3. Background training + TensorBoard**
+
+```python
+%cd luwu_mjlab
+!python scripts/train.py XGOMini-Flat --env.scene.num-envs=4096 > output.log 2>&1 &
+
+%load_ext tensorboard
+%tensorboard --logdir ./logs/rsl_rl/xgomini_velocity
 ```
 
 ## Training
