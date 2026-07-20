@@ -1,0 +1,22 @@
+{
+  "description": "XGO-Mini2S URDF joint name <-> XGO motor ID mapping",
+  "mapping": {
+    "fl_hip_joint": { "id": 13, "label": "左前肩" },
+    "fl_thigh_joint":    { "id": 12, "label": "左前大腿" },
+    "fl_calf_joint":       { "id": 11, "label": "左前小腿" },
+    "fr_hip_joint":{ "id": 23, "label": "右前肩" },
+    "fr_thigh_joint":   { "id": 22, "label": "右前大腿" },
+    "fr_calf_joint":      { "id": 21, "label": "右前小腿" },
+    "br_hip_joint": { "id": 33, "label": "右后肩" },
+    "br_thigh_joint":    { "id": 32, "label": "右后大腿" },
+    "br_calf_joint":       { "id": 31, "label": "右后小腿" },
+    "bl_hip_joint":  { "id": 43, "label": "左后肩" },
+    "bl_thigh_joint":     { "id": 42, "label": "左后大腿" },
+    "bl_calf_joint":        { "id": 41, "label": "左后小腿" },
+    "arm_yaw_joint":           { "id": 54, "label": "夹爪底座" },
+    "arm_calf_joint":        { "id": 52, "label": "小臂" },
+    "arm_thigh_joint":        { "id": 53, "label": "大臂" },
+    "hand_right_joint":        { "id": 51, "label": "夹爪" }
+  }
+}
+

@@ -330,10 +330,13 @@ class variable_posture:
   from default pose. Smaller std = stricter (less deviation allowed), larger
   std = more forgiving. The reward is: exp(-mean(error² / std²))
 
-  Three speed regimes (based on linear + angular command velocity):
+  Three speed regimes (based on command velocity magnitude):
     - std_standing (speed < walking_threshold): Tight tolerance for holding pose.
     - std_walking (walking_threshold <= speed < running_threshold): Moderate.
     - std_running (speed >= running_threshold): Loose tolerance for large motion.
+
+  By default speed is ||cmd_xy|| + |cmd_wz|. Set linear_speed_only=True to use
+  ||cmd_xy|| only.
 
   Tune std values per joint based on how much motion that joint needs at each
   speed. Map joint name patterns to std values, e.g. {".*knee.*": 0.35}.
@@ -377,6 +380,7 @@ class variable_posture:
     command_name: str,
     walking_threshold: float = 0.5,
     running_threshold: float = 1.5,
+    linear_speed_only: bool = False,
   ) -> torch.Tensor:
     del std_standing, std_walking, std_running  # Unused.
 
@@ -385,14 +389,17 @@ class variable_posture:
     assert command is not None
 
     linear_speed = torch.norm(command[:, :2], dim=1)
-    angular_speed = torch.abs(command[:, 2])
-    total_speed = linear_speed + angular_speed
+    if linear_speed_only:
+      speed = linear_speed
+    else:
+      angular_speed = torch.abs(command[:, 2])
+      speed = linear_speed + angular_speed
 
-    standing_mask = (total_speed < walking_threshold).float()
+    standing_mask = (speed < walking_threshold).float()
     walking_mask = (
-      (total_speed >= walking_threshold) & (total_speed < running_threshold)
+      (speed >= walking_threshold) & (speed < running_threshold)
     ).float()
-    running_mask = (total_speed >= running_threshold).float()
+    running_mask = (speed >= running_threshold).float()
 
     std = (
       self.std_standing * standing_mask.unsqueeze(1)
@@ -425,4 +432,68 @@ def stand_still(
             scale = (total_command <= command_threshold).float()
             reward *= scale
     return reward
+
+
+def recovery_progress(
+  env: ManagerBasedRlEnv,
+  asset_cfg: SceneEntityCfg = _DEFAULT_ASSET_CFG,
+) -> torch.Tensor:
+  """Linear upright signal from projected gravity z (z=-1 -> 1, z=1 -> 0)."""
+  asset: Entity = env.scene[asset_cfg.name]
+  z = asset.data.projected_gravity_b[:, 2]
+  return torch.clamp((1.0 - z) * 0.5, 0.0, 1.0)
+
+
+class gravity_gated_variable_posture(variable_posture):
+  """Pose reward active only when near upright (projected gravity z below threshold)."""
+
+  def __call__(
+    self,
+    env: ManagerBasedRlEnv,
+    std_standing,
+    std_walking,
+    std_running,
+    asset_cfg: SceneEntityCfg,
+    command_name: str,
+    walking_threshold: float = 0.5,
+    running_threshold: float = 1.5,
+    gravity_z_threshold: float = -0.4,
+  ) -> torch.Tensor:
+    reward = super().__call__(
+      env=env,
+      std_standing=std_standing,
+      std_walking=std_walking,
+      std_running=std_running,
+      asset_cfg=asset_cfg,
+      command_name=command_name,
+      walking_threshold=walking_threshold,
+      running_threshold=running_threshold,
+    )
+    asset: Entity = env.scene[asset_cfg.name]
+    active = (asset.data.projected_gravity_b[:, 2] < gravity_z_threshold).float()
+    return reward * active
+
+
+def gravity_gated_body_ang_vel_penalty(
+  env: ManagerBasedRlEnv,
+  asset_cfg: SceneEntityCfg = _DEFAULT_ASSET_CFG,
+  gravity_z_threshold: float = -0.4,
+) -> torch.Tensor:
+  """Penalize base roll/pitch rate only when near upright."""
+  penalty = body_angular_velocity_penalty(env, asset_cfg=asset_cfg)
+  asset: Entity = env.scene[asset_cfg.name]
+  upright_gate = (asset.data.projected_gravity_b[:, 2] < gravity_z_threshold).float()
+  return penalty * upright_gate
+
+
+def gravity_gated_angular_momentum_penalty(
+  env: ManagerBasedRlEnv,
+  sensor_name: str,
+  gravity_z_threshold: float = -0.4,
+) -> torch.Tensor:
+  """Penalize whole-body angular momentum only when near upright."""
+  penalty = angular_momentum_penalty(env, sensor_name=sensor_name)
+  asset: Entity = env.scene["robot"]
+  upright_gate = (asset.data.projected_gravity_b[:, 2] < gravity_z_threshold).float()
+  return penalty * upright_gate
 

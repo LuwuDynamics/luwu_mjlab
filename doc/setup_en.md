@@ -29,22 +29,22 @@ This installs [**mjlab**](https://github.com/mujocolab/mjlab) and MuJoCo Warp as
 
 ```bash
 # List Luwu tasks only
-python scripts/list_envs.py --keyword XGOMini
+python scripts/list_envs.py --keyword Mini2S
 
 # Zero-action sanity check
-python scripts/play.py XGOMini-Flat --agent zero
+python scripts/play.py Mini2S-Walk-Flat --agent zero
 ```
 
 ## 4. Start training
 
 ```bash
-python scripts/train.py XGOMini-Flat --env.scene.num-envs=4096
+python scripts/train.py Mini2S-Walk-Flat --env.scene.num-envs=4096
 ```
 
-Logs are saved under `logs/rsl_rl/xgomini_velocity/` (TensorBoard).
+Logs are saved under `logs/rsl_rl/mini2s_velocity_walk/` (TensorBoard).
 
 View TensorBoard:
 
 ```bash
-tensorboard --logdir logs/rsl_rl/xgomini_velocity
+tensorboard --logdir logs/rsl_rl/mini2s_velocity_walk
 ```

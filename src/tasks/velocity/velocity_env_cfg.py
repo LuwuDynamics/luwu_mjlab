@@ -59,11 +59,11 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
     "base_ang_vel": ObservationTermCfg(
       func=mdp.builtin_sensor,
       params={"sensor_name": "robot/imu_ang_vel"},
-      noise=Unoise(n_min=-0.2, n_max=0.2),
+      noise=Unoise(n_min=-1.0, n_max=1.0),
     ),
     "projected_gravity": ObservationTermCfg(
       func=mdp.projected_gravity,
-      noise=Unoise(n_min=-0.05, n_max=0.05),
+      noise=Unoise(n_min=-0.1, n_max=0.1),
     ),
     "command": ObservationTermCfg(
       func=mdp.generated_commands,
@@ -71,15 +71,15 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
     ),
     "phase": ObservationTermCfg(
       func=mdp.phase,
-      params={"period": 0.6, "command_name": "twist"},
+      params={"period": 0.4, "command_name": "twist"},
     ),
     "joint_pos": ObservationTermCfg(
       func=mdp.joint_pos_rel,
-      noise=Unoise(n_min=-0.01, n_max=0.01),
+      noise=Unoise(n_min=-0.1, n_max=0.1),
     ),
     "joint_vel": ObservationTermCfg(
       func=mdp.joint_vel_rel,
-      noise=Unoise(n_min=-1.5, n_max=1.5),
+      noise=Unoise(n_min=-2.0, n_max=2.0),
     ),
     "actions": ObservationTermCfg(func=mdp.last_action),
     "height_scan": ObservationTermCfg(
@@ -95,7 +95,7 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
     "base_lin_vel": ObservationTermCfg(
       func=mdp.builtin_sensor,
       params={"sensor_name": "robot/imu_lin_vel"},
-      noise=Unoise(n_min=-0.5, n_max=0.5),
+      noise=Unoise(n_min=-1.0, n_max=1.0),
     ),
     "height_scan": ObservationTermCfg(
       func=envs_mdp.height_scan,
@@ -236,7 +236,7 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
       func=dr.encoder_bias,
       params={
         "asset_cfg": SceneEntityCfg("robot"),
-        "bias_range": (-0.015, 0.015),
+        "bias_range": (-0.04, 0.04),
       },
     ),
     "base_com": EventTermCfg(
@@ -246,9 +246,9 @@ def make_velocity_env_cfg() -> ManagerBasedRlEnvCfg:
         "asset_cfg": SceneEntityCfg("robot", body_names=()),  # Set per-robot.
         "operation": "add",
         "ranges": {
-          0: (-0.05, 0.05),
-          1: (-0.05, 0.05),
-          2: (-0.05, 0.05),
+          0: (-0.035, 0.035),
+          1: (-0.02, 0.02),
+          2: (-0.02, 0.02),
         },
       },
     ),

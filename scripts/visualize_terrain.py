@@ -19,7 +19,11 @@ import numpy as np
 import viser
 
 from mjlab.asset_zoo.robots import get_yam_robot_cfg
-from src.assets.robots import get_xgomini_robot_cfg
+from src.assets.robots import (
+  get_lite3_robot_cfg,
+  get_mini2s_robot_cfg,
+  get_mini2sw_robot_cfg,
+)
 from mjlab.terrains.config import ALL_TERRAINS_CFG
 from mjlab.terrains.terrain_generator import (
   TerrainGenerator,
@@ -33,7 +37,9 @@ from mjlab.viewer.viser.conversions import (
 # Supported robots for visualization.
 ROBOT_CFG_GETTERS = {
   "None": None,
-  "XGOMini": get_xgomini_robot_cfg,
+  "Mini2S": get_mini2s_robot_cfg,
+  "Mini2SW": get_mini2sw_robot_cfg,
+  "Lite3": get_lite3_robot_cfg,
   "Yam": get_yam_robot_cfg,
 }
 

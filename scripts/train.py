@@ -19,6 +19,8 @@ from mjlab.utils.os import dump_yaml, get_checkpoint_path
 from mjlab.utils.torch import configure_torch_backends
 from mjlab.utils.wrappers import VideoRecorder
 
+DEFAULT_NUM_ENVS = 4096
+
 
 @dataclass(frozen=True)
 class TrainConfig:
@@ -35,6 +37,7 @@ class TrainConfig:
   @staticmethod
   def from_task(task_id: str) -> "TrainConfig":
     env_cfg = load_env_cfg(task_id)
+    env_cfg.scene.num_envs = DEFAULT_NUM_ENVS
     agent_cfg = load_rl_cfg(task_id)
     return TrainConfig(env=env_cfg, agent=agent_cfg)
 

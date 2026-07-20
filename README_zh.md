@@ -1,6 +1,6 @@
 # luwu_mjlab
 
-**luwu_mjlab** 是 [陆吾智能（Luwu Dynamics）](https://www.xgorobot.com/) 的强化学习训练环境，基于 MuJoCo 仿真训练四足机器人（XGOMini）的运动控制策略。
+**luwu_mjlab** 是 [陆吾智能（Luwu Dynamics）](https://www.xgorobot.com/) 的强化学习训练环境，基于 MuJoCo 仿真训练四足机器人（Mini2S / Mini2SW / Lite3）的运动控制策略。
 
 底层框架 **[mjlab](https://github.com/mujocolab/mjlab)** v1.2.0，融合 Isaac Lab 风格 API 与 GPU 加速的 MuJoCo Warp。本项目在其基础上扩展了陆吾机器人模型和任务配置。
 
@@ -28,15 +28,22 @@ pip install -e .
 验证：
 
 ```bash
-python scripts/list_envs.py --keyword XGOMini
-python scripts/play.py XGOMini-Flat --agent zero
+python scripts/list_envs.py --keyword Mini2S
+python scripts/play.py Mini2S-Walk-Flat --agent zero
 ```
 
 训练：
 
 ```bash
-python scripts/train.py XGOMini-Flat --env.scene.num-envs=4096
-tensorboard --logdir logs/rsl_rl/xgomini_velocity
+python scripts/train.py Mini2S-Walk-Flat --env.scene.num-envs=4096
+tensorboard --logdir logs/rsl_rl/mini2s_velocity_walk
+```
+
+翻身/恢复任务：
+
+```bash
+python scripts/train.py Mini2S-Turn-Flat --env.scene.num-envs=4096
+tensorboard --logdir logs/rsl_rl/mini2s_velocity_turn
 ```
 
 ### Windows
@@ -72,7 +79,7 @@ pip install -e .
 **4. 冒烟测试**
 
 ```cmd
-python scripts/play.py XGOMini-Flat --agent zero --num-envs 4
+python scripts/play.py Mini2S-Walk-Flat --agent zero --num-envs 4
 ```
 
 > **warp-lang 必须 <1.14**，因 mjlab 1.2.0 依赖 `wp.context.runtime`，新版本已移除该 API。
@@ -118,10 +125,10 @@ Colab 提供免费 T4 GPU，无需本地环境即可运行训练和可视化。
 
 ```python
 %cd luwu_mjlab
-!python scripts/train.py XGOMini-Flat --env.scene.num-envs=4096 > output.log 2>&1 &
+!python scripts/train.py Mini2S-Walk-Flat --env.scene.num-envs=4096 > output.log 2>&1 &
 
 %load_ext tensorboard
-%tensorboard --logdir ./logs/rsl_rl/xgomini_velocity
+%tensorboard --logdir ./logs/rsl_rl/mini2s_velocity_walk
 ```
 
 ## 训练
@@ -130,8 +137,19 @@ Colab 提供免费 T4 GPU，无需本地环境即可运行训练和可视化。
 python scripts/train.py <任务ID> [--覆盖参数...]
 
 示例:
-python scripts/train.py XGOMini-Flat --env.scene.num-envs 4096
+python scripts/train.py Mini2S-Walk-Flat --env.scene.num-envs 4096
+python scripts/train.py Mini2S-Turn-Flat --env.scene.num-envs 4096
 ```
+
+已注册的 Mini2S 相关任务：
+
+| 任务 ID | 说明 |
+|---|---|
+| `Mini2S-Walk-Flat` | Mini2S 平地速度跟踪（行走） |
+| `Mini2S-Turn-Flat` | Mini2S 平地翻身/恢复 |
+| `Mini2SW-Walk-Flat` | Mini2SW 轮足版 — 行走 |
+| `Mini2SW-Turn-Flat` | Mini2SW 轮足版 — 翻身/恢复 |
+| `Lite3-Walk-Flat` | Lite3 行走 |
 
 CLI 两阶段解析：第一参数选任务 → 剩余参数覆盖 `TrainConfig`（冻结数据类：`env` + `agent`）。
 
@@ -154,7 +172,7 @@ CLI 两阶段解析：第一参数选任务 → 剩余参数覆盖 `TrainConfig`
 ```bash
 
 # 加载最新检查点
-python scripts/play.py XGOMini-Flat
+python scripts/play.py Mini2S-Walk-Flat
 
 通过web网页查看模拟效果，浏览器通过 http://localhost:8080 地址访问
 ╭────── viser (listening *:8080) ───────╮
@@ -165,11 +183,15 @@ python scripts/play.py XGOMini-Flat
 ╰───────────────────────────────────────╯
 
 # 指定检查点
-python scripts/play.py XGOMini-Flat \
-  --checkpoint-file logs/rsl_rl/xgomini_velocity/2026-xx-xx_xx-xx-xx/model_xx.pt
+python scripts/play.py Mini2S-Walk-Flat \
+  --checkpoint-file logs/rsl_rl/mini2s_velocity_walk/2026-xx-xx_xx-xx-xx/model_xx.pt
+
+# 翻身/恢复任务
+python scripts/play.py Mini2S-Turn-Flat \
+  --checkpoint-file logs/rsl_rl/mini2s_velocity_turn/2026-xx-xx_xx-xx-xx/model_xx.pt
 
 # MDP 健全性检查（零动作静止，无需检查点）
-python scripts/play.py XGOMini-Flat --agent zero
+python scripts/play.py Mini2S-Walk-Flat --agent zero
 ```
 
 ## 项目架构
@@ -182,15 +204,21 @@ scripts/
   visualize_terrain.py  # 地形预览
 
 src/
-  assets/robots/xgomini/  # MJCF XML、STL/DAE 网格、配置常量
+  assets/robots/
+    mini2s/               # Mini2S MJCF XML、网格、配置常量
+    mini2sw/              # Mini2SW 轮足版
+    lite3/                # Lite3
   assets/motions/          # 跟踪任务参考动作文件 (.npz)
   tasks/
     __init__.py            # import_packages() 自动扫描注册
     velocity/              # 速度跟踪运动任务
       velocity_env_cfg.py           # make_velocity_env_cfg() 工厂
-      config/xgomini/
-        env_cfgs.py                 # rough / flat 环境配置
-        rl_cfg.py                   # PPO 超参数
+      config/
+        mini2s_walk/                # Mini2S 平地行走
+        mini2s_turn/                # Mini2S 平地翻身/恢复
+        mini2sw_walk/               # Mini2SW 平地行走
+        mini2sw_turn/               # Mini2SW 平地翻身/恢复
+        lite3_walk/                 # Lite3 平地行走
       mdp/                          # observations, rewards, terminations, curriculums, commands
       rl/runner.py                  # VelocityOnPolicyRunner (ONNX 导出)
     tracking/              # 动作模仿跟踪任务（结构同 velocity/）
@@ -211,6 +239,8 @@ Python **3.11**，全部锁定版本（`setup.py`）：
 ## 日志与检查点
 
 - 路径：`logs/rsl_rl/<实验名>/<时间戳>/`；检查点：`model_<迭代数>.pt`
+- Mini2S 行走：`logs/rsl_rl/mini2s_velocity_walk/`
+- Mini2S 翻身/恢复：`logs/rsl_rl/mini2s_velocity_turn/`
 - 配置 YAML 写入 `params/`（恢复时跳过）
 - 默认 `MjlabOnPolicyRunner`，`VelocityOnPolicyRunner` 额外支持 ONNX 导出 + wandb
 

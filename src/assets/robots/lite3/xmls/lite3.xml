@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mujoco model="lite3">
+  <compiler angle="radian" meshdir="assets" autolimits="true"/>
+
+  <option gravity="0 0 -9.81" integrator="RK4"/>
+
+
+  <default>
+    <default class="robot">
+      <joint frictionloss="0.0001" armature="0.0005"/>
+      <position kp="0.0" dampratio="0.0"/>
+      <default class="visual">
+        <geom type="mesh" contype="0" conaffinity="0" group="2" density="0"/>
+      </default>
+
+      <default class="collision">
+        <geom type="mesh" contype="1" conaffinity="0" group="3" density="0"/>
+      </default>
+    </default>
+  </default>
+
+  <default>
+    <geom contype="1" conaffinity="2"/>
+    <joint damping="0.05" frictionloss="0.0001" armature="0.0025"/>
+
+    <default class="servo">
+      <geom contype="1" conaffinity="0" condim="1" />
+      <joint damping="0.13" frictionloss="0.001" armature="0.0025" />
+      <position kp="0.7" kv="0.0" forcerange="-0.31 0.31" ctrlrange="-1.57 1.57" />
+    </default>
+  </default>
+
+
+
+  <asset>
+    <mesh name="body" file="body.STL"/>
+    <mesh name="mainarm" file="mainarm.STL"/>
+    <mesh name="forearm" file="forearm.STL"/>
+    <mesh name="L_calw" file="L_calw.STL"/>
+    <mesh name="R_claw" file="R_claw.STL"/>
+    <mesh name="FR_hip" file="FR_hip.STL"/>
+    <mesh name="FR_thigh" file="FR_thigh.STL"/>
+    <mesh name="FR_shank" file="FR_shank.STL"/>
+    <mesh name="FL_hip" file="FL_hip.STL"/>
+    <mesh name="FL_thigh" file="FL_thigh.STL"/>
+    <mesh name="FL_shank" file="FL_shank.STL"/>
+    <mesh name="RR_hip" file="RR_hip.STL"/>
+    <mesh name="RR_thigh" file="RR_thigh.STL"/>
+    <mesh name="RR_shank" file="RR_shank.STL"/>
+    <mesh name="RL_hip" file="RL_hip.STL"/>
+    <mesh name="RL_thigh" file="RL_thigh.STL"/>
+    <mesh name="RL_shank" file="RL_shank.STL"/>
+  </asset>
+
+  <sensor>
+    <framequat name="orientation" objtype="site" noise="0.001" objname="imu"/>
+    <gyro name="angular-velocity" site="imu" noise="0.005"/>
+    <gyro name="imu_ang_vel" site="imu"/>
+    <velocimeter name="imu_lin_vel" site="imu"/>
+    <accelerometer name="imu_accel" site="imu"/>
+    <subtreeangmom name="root_angmom" body="body"/>
+  </sensor>
+
+  <worldbody>
+    <body name="body" pos="0 0 0.12" quat="1 0 0 0" childclass="robot">
+      <freejoint name="floating_base"/>
+      <inertial pos="0.0089518 -2.6845e-05 0.0018147" quat="0.999995 0.000675 0.00221 0" mass="0.15" diaginertia="3.335e-05 0.00011701 0.00013517"/>
+      <geom name="body_visual" class="visual" mesh="body" rgba="1 1 1 1"/>
+      <geom name="body_collision" class="collision" mesh="body" rgba="1 1 1 0.5"/>
+      <site name="imu" pos="0 0 0" quat="1 0 0 0"/>
+
+      <body name="FL_hip" pos="0.08385 0.0225 0">
+        <inertial pos="-0.016365 0.019585 0.0038725" quat="0.41782 0.545293 -0.594921 0.417314" mass="0.005" diaginertia="1.50573e-06 1.23571e-06 6.88773e-07"/>
+        <joint name="FL_hip_joint" class="servo" axis="-1 0 0" range="-0.9 0.6"  actuatorfrcrange="-0.37 0.37"/>
+        <geom name="FL_hip_visual" class="visual" mesh="FL_hip" rgba="0.86667 0.9098 1 1"/>
+        <geom name="FL_hip_collision" class="collision" mesh="FL_hip" rgba="0.86667 0.9098 1 0.5"/>
+
+        <body name="FL_thigh" pos="-0.0169 0.047399 0">
+          <inertial pos="-0.0027306 -0.017449 -0.027452" quat="0.706502 -3.34354e-05 -3.53893e-05 0.707711" mass="0.026" diaginertia="3.2628e-06 3.1113e-06 5.3399e-07"/>
+          <joint name="FL_thigh_joint" class="servo"  axis="0 1 0" range="-1.43 1.76"  actuatorfrcrange="-0.37 0.37"/>
+          <geom name="FL_thigh_visual" class="visual" mesh="FL_thigh" rgba="1 1 1 1"/>
+          <geom name="FL_thigh_collision" class="collision" mesh="FL_thigh" rgba="1 1 1 0.5"/>
+
+          <body name="FL_shank" pos="0 0 -0.0549">
+            <inertial pos="0.027208 -0.018103 -0.0051257" quat="-0.0100994 0.615643 -0.0154906 0.787808" mass="0.01" diaginertia="3.14517e-06 2.92276e-06 5.83858e-07"/>
+            <joint name="FL_shank_joint" class="servo" axis="0 -1 0" range="-2.26 1.3"  actuatorfrcrange="-0.37 0.37"/>
+            <geom name="FL_shank_visual" class="visual" mesh="FL_shank" rgba="0.86667 0.9098 1 1"/>
+            <geom name="FL_shank_collision" class="collision" mesh="FL_shank" rgba="0.86667 0.9098 1 0.5"/>
+            <site name="FL" pos="0.068 -0.02 -0.0" type="sphere" size="0.008" rgba="0 0.8 1 1" group="2" />
+
+          </body>
+        </body>
+      </body>
+
+      <body name="FR_hip" pos="0.08385 -0.0225 0">
+        <inertial pos="-0.016365 -0.019585 0.0038725" quat="0.545293 0.41782 -0.417314 0.594921" mass="0.005" diaginertia="1.50573e-06 1.23571e-06 6.88773e-07"/>
+        <joint name="FR_hip_joint" class="servo" axis="-1 0 0" range="-0.6 0.9"  actuatorfrcrange="-0.37 0.37"/>
+        <geom name="FR_hip_visual" class="visual" mesh="FR_hip" rgba="1 1 1 1"/>
+        <geom name="FR_hip_collision" class="collision" mesh="FR_hip" rgba="1 1 1 0.5"/>
+
+        <body name="FR_thigh" pos="-0.0169 -0.047399 0">
+          <inertial pos="-0.0027307 0.017449 -0.027452" quat="0.707708 -3.60834e-05 -3.4327e-05 0.706505" mass="0.026" diaginertia="3.2628e-06 3.1113e-06 5.3399e-07"/>
+          <joint name="FR_thigh_joint" class="servo" axis="0 1 0" range="-1.43 1.76"  actuatorfrcrange="-0.37 0.37"/>
+          <geom name="FR_thigh_visual" class="visual" mesh="FR_thigh" rgba="1 1 1 1"/>
+          <geom name="FR_thigh_collision" class="collision" mesh="FR_thigh" rgba="1 1 1 0.5"/>
+
+          <body name="FR_shank" pos="0 0 -0.0549">
+            <inertial pos="0.027207 0.018103 -0.0051258" quat="0.0100993 0.615643 0.0154903 0.787808" mass="0.01" diaginertia="3.14517e-06 2.92276e-06 5.83858e-07"/>
+            <joint name="FR_shank_joint" class="servo" axis="0 -1 0" range="-2.26 1.3"  actuatorfrcrange="-0.37 0.37"/>
+            <geom name="FR_shank_visual" class="visual" mesh="FR_shank" rgba="1 1 1 1"/>
+            <geom name="FR_shank_collision" class="collision" mesh="FR_shank" rgba="1 1 1 0.5"/>
+            <site name="FR" pos="0.068 0.02 -0.0" type="sphere" size="0.008" rgba="1 0.2 0.2 1" group="2" />
+
+          </body>
+        </body>
+      </body>
+
+      <body name="RR_hip" pos="-0.08385 -0.0225 0">
+        <inertial pos="0.017318 -0.019585 0.0038725" quat="0.545293 0.41782 -0.417314 0.594921" mass="0.005" diaginertia="1.50573e-06 1.23571e-06 6.88773e-07"/>
+        <joint name="RR_hip_joint" class="servo" axis="-1 0 0" range="-0.6 0.9"  actuatorfrcrange="-0.37 0.37"/>
+        <geom name="RR_hip_visual" class="visual" mesh="RR_hip" rgba="1 1 1 1"/>
+        <geom name="RR_hip_collision" class="collision" mesh="RR_hip" rgba="1 1 1 0.5"/>
+
+        <body name="RR_thigh" pos="0.0169 -0.047399 0">
+          <inertial pos="-0.0027307 0.017449 -0.027452" quat="0.707708 -3.60832e-05 -3.43271e-05 0.706505" mass="0.026" diaginertia="3.2628e-06 3.1113e-06 5.3399e-07"/>
+          <joint name="RR_thigh_joint" class="servo" axis="0 1 0" range="-1.43 1.76"  actuatorfrcrange="-0.37 0.37"/>
+          <geom name="RR_thigh_visual" class="visual" mesh="RR_thigh" rgba="1 1 1 1"/>
+          <geom name="RR_thigh_collision" class="collision" mesh="RR_thigh" rgba="1 1 1 0.5"/>
+
+          <body name="RR_shank" pos="0 0 -0.0549">
+            <inertial pos="0.027208 0.018103 -0.0051258" quat="0.0101 0.615643 0.0154908 0.787808" mass="0.01" diaginertia="3.14517e-06 2.92276e-06 5.83858e-07"/>
+            <joint name="RR_shank_joint" class="servo" axis="0 -1 0" range="-2.26 1.3"  actuatorfrcrange="-0.37 0.37"/>
+            <geom name="RR_shank_visual" class="visual" mesh="RR_shank" rgba="1 1 1 1"/>
+            <geom name="RR_shank_collision" class="collision" mesh="RR_shank" rgba="1 1 1 0.5"/>
+            <site name="RR" pos="0.068 0.02 -0.0" type="sphere" size="0.008" rgba="1 0.8 0 1" group="2" />
+
+          </body>
+        </body>
+      </body>
+
+      <body name="RL_hip" pos="-0.08385 0.0225 0">
+        <inertial pos="0.017318 0.019585 0.0038725" quat="0.41782 0.545293 -0.594921 0.417314" mass="0.005" diaginertia="1.50573e-06 1.23571e-06 6.88773e-07"/>
+        <joint name="RL_hip_joint" class="servo" axis="-1 0 0" range="-0.9 0.6"  actuatorfrcrange="-0.37 0.37"/>
+        <geom name="RL_hip_visual" class="visual" mesh="RL_hip" rgba="1 1 1 1"/>
+        <geom name="RL_hip_collision" class="collision" mesh="RL_hip" rgba="1 1 1 0.5"/>
+
+        <body name="RL_thigh" pos="0.0169 0.047399 0">
+          <inertial pos="-0.0027306 -0.017449 -0.027452" quat="0.706502 -3.34309e-05 -3.53856e-05 0.707711" mass="0.026" diaginertia="3.2628e-06 3.1113e-06 5.3399e-07"/>
+          <joint name="RL_thigh_joint" class="servo" axis="0 1 0" range="-1.43 1.76"  actuatorfrcrange="-0.37 0.37"/>
+          <geom name="RL_thigh_visual" class="visual" mesh="RL_thigh" rgba="1 1 1 1"/>
+          <geom name="RL_thigh_collision" class="collision" mesh="RL_thigh" rgba="1 1 1 0.5"/>
+
+          <body name="RL_shank" pos="0 0 -0.0549">
+            <inertial pos="0.027208 -0.018103 -0.0051257" quat="-0.0101 0.615643 -0.015491 0.787808" mass="0.01" diaginertia="3.14517e-06 2.92276e-06 5.83858e-07"/>
+            <joint name="RL_shank_joint" class="servo" axis="0 -1 0" range="-2.26 1.3"  actuatorfrcrange="-0.37 0.37"/>
+            <geom name="RL_shank_visual" class="visual" mesh="RL_shank" rgba="0.86667 0.9098 1 1"/>
+            <geom name="RL_shank_collision" class="collision" mesh="RL_shank" rgba="0.86667 0.9098 1 0.5"/>
+            <site name="RL" pos="0.068 -0.02 -0.0" type="sphere" size="0.008" rgba="0.2 1 0.2 1" group="2" />
+
+          </body>
+        </body>
+      </body>
+
+
+      <body name="mainarm" pos="0.065016 -0.00075 0.03519">
+        <inertial pos="-0.0023546 0.0010091 0.026309" quat="0.706752 -4.95037e-05 -4.49786e-05 0.707462" mass="0.015" diaginertia="3.7087e-06 3.5044e-06 4.855e-07"/>
+        <joint name="mainarm_joint" class="servo" axis="0 1 0" range="-1.6 1.3"  actuatorfrcrange="-0.37 0.37"/>
+        <geom name="mainarm_visual" class="visual" mesh="mainarm" rgba="0.79216 0.81961 0.93333 1"/>
+        <geom name="mainarm_collision" class="collision" mesh="mainarm" rgba="0.79216 0.81961 0.93333 0.5"/>
+
+        <body name="forearm" pos="0 0 0.0599">
+          <inertial pos="0.041203 0.0007728 0.0094318" quat="0.785877 0.0451401 -0.250836 0.563419" mass="0.01" diaginertia="5.0462e-06 5.0084e-06 1.5649e-06"/>
+          <joint name="forearm_joint" class="servo" axis="0 1 0" range="-1.47 1.3"  actuatorfrcrange="-0.37 0.37"/>
+          <geom name="forearm_visual" class="visual" mesh="forearm" rgba="0.79216 0.81961 0.93333 1"/>
+          <geom name="forearm_collision" class="collision" mesh="forearm" rgba="0.79216 0.81961 0.93333 0.5"/>
+
+          <body name="L_calw" pos="0.097841 0 -4.8373e-05">
+            <inertial pos="-0.0095549 0.011982 -0.0016877" quat="0.707107 0 0 0.707107" mass="0.003" diaginertia="2.6534e-07 2.117e-07 1.379e-07"/>
+            <geom name="L_calw_visual" class="visual" mesh="L_calw" rgba="1 1 1 1"/>
+            <geom name="L_calw_collision" class="collision" mesh="L_calw" rgba="1 1 1 0.5"/>
+          </body>
+
+          <body name="R_claw" pos="0.097841 0 -4.8373e-05">
+            <inertial pos="-0.0075056 -0.010482 0.006149" quat="0.707107 0 0 0.707107" mass="0.003" diaginertia="2.1809e-07 2.117e-07 1.8515e-07"/>
+            <geom name="R_claw_visual" class="visual" mesh="R_claw" rgba="1 1 1 1"/>
+            <geom name="R_claw_collision" class="collision" mesh="R_claw" rgba="1 1 1 0.5"/>
+          </body>
+        </body>
+      </body>
+
+    </body>
+  </worldbody>
+
+  <actuator>
+    <position class="servo" name="mainarm_joint" joint="mainarm_joint"/>
+    <position class="servo" name="forearm_joint" joint="forearm_joint"/>
+    <position class="servo" name="FR_hip_joint" joint="FR_hip_joint"/>
+    <position class="servo" name="FR_thigh_joint" joint="FR_thigh_joint"/>
+    <position class="servo" name="FR_shank_joint" joint="FR_shank_joint"/>
+    <position class="servo" name="FL_hip_joint" joint="FL_hip_joint"/>
+    <position class="servo" name="FL_thigh_joint" joint="FL_thigh_joint"/>
+    <position class="servo" name="FL_shank_joint" joint="FL_shank_joint"/>
+    <position class="servo" name="RR_hip_joint" joint="RR_hip_joint"/>
+    <position class="servo" name="RR_thigh_joint" joint="RR_thigh_joint"/>
+    <position class="servo" name="RR_shank_joint" joint="RR_shank_joint"/>
+    <position class="servo" name="RL_hip_joint" joint="RL_hip_joint"/>
+    <position class="servo" name="RL_thigh_joint" joint="RL_thigh_joint"/>
+    <position class="servo" name="RL_shank_joint" joint="RL_shank_joint"/>
+  </actuator>
+</mujoco>

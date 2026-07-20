@@ -1,0 +1,564 @@
+<?xml version='1.0' encoding='utf-8'?>
+<robot name="min2_pro" version="1.0">
+
+    <!-- JOINT_NAMES = [
+        'fl_hip_joint', 'fl_thigh_joint', 'fl_calf_joint',
+        'fr_hip_joint', 'fr_thigh_joint', 'fr_calf_joint',
+        'bl_hip_joint', 'bl_thigh_joint', 'bl_calf_joint',
+        'br_hip_joint', 'br_thigh_joint', 'br_calf_joint',
+        'arm_thigh_joint', 'arm_calf_joint',
+        'hand_right_joint'
+    ] -->
+
+  <joint name="fl_hip_joint" type="revolute">
+    <limit lower="-0.6" upper="0.6" effort="0.045" velocity="10.00000" />
+    <origin rpy="0.00000 0.00000 0.00000" xyz="-0.04946 -0.02250 -0.02207" />
+    <parent link="body_fixed" />
+    <child link="left_front_shoulder_X" />
+    <axis xyz="1.00000 -0.00000 -0.00000" />
+  </joint>
+  <joint name="fl_thigh_joint" type="revolute">
+    <limit lower="-1.22" upper="1.91" effort="0.045" velocity="10.00000" />
+    <origin rpy="0.00000 0.00000 0.00000" xyz="0.01857 -0.04956 0.00000" />
+    <parent link="left_front_shoulder_X" />
+    <child link="left_front_thigh_Y" />
+    <axis xyz="-0.00000 -1.00000 -0.00000" />
+  </joint>
+  <joint name="fl_calf_joint" type="revolute">
+    <limit lower="-1.134" upper="1.047" effort="0.045" velocity="10.00000" />
+    <origin rpy="0.00000 0.00000 0.00000" xyz="-0.00000 0.00000 -0.05991" />
+    <parent link="left_front_thigh_Y" />
+    <child link="left_front_calf" />
+    <axis xyz="-0.00000 -1.00000 -0.00000" />
+  </joint>
+
+  <joint name="fr_hip_joint" type="revolute">
+    <limit lower="-0.6" upper="0.6" effort="0.045" velocity="10.00000" />
+    <origin rpy="0.00000 0.00000 0.00000" xyz="-0.04946 0.02250 -0.02207" />
+    <parent link="body_fixed" />
+    <child link="right_front_shoulder_X" />
+    <axis xyz="-1.00000 -0.00000 -0.00000" />
+  </joint>
+  <joint name="fr_thigh_joint" type="revolute">
+    <limit lower="-1.22" upper="1.91" effort="0.045" velocity="10.00000" />
+    <origin rpy="0.00000 0.00000 0.00000" xyz="0.01857 0.04876 0.00000" />
+    <parent link="right_front_shoulder_X" />
+    <child link="right_front_thigh_Y" />
+    <axis xyz="-0.00000 -1.00000 -0.00000" />
+  </joint>
+  <joint name="fr_calf_joint" type="revolute">
+    <limit lower="-1.134" upper="1.047" effort="0.045" velocity="10.00000" />
+    <origin rpy="0.00000 0.00000 0.00000" xyz="0.00001 0.00080 -0.05991" />
+    <parent link="right_front_thigh_Y" />
+    <child link="right_front_calf" />
+    <axis xyz="-0.00000 -1.00000 -0.00000" />
+  </joint>
+
+
+  <joint name="br_hip_joint" type="revolute">
+    <limit lower="-0.6" upper="0.6" effort="0.045" velocity="10.00000" />
+    <origin rpy="0.00000 0.00000 0.00000" xyz="0.10059 0.02250 -0.02207" />
+    <parent link="body_fixed" />
+    <child link="right_hind_shoulder_X" />
+    <axis xyz="-1.00000 -0.00000 -0.00000" />
+  </joint>
+  <joint name="br_thigh_joint" type="revolute">
+    <limit lower="-1.22" upper="1.91" effort="0.045" velocity="10.00000" />
+    <origin rpy="0.00000 0.00000 0.00000" xyz="0.01853 0.04876 0.00000" />
+    <parent link="right_hind_shoulder_X" />
+    <child link="right_hind_thigh_Y" />
+    <axis xyz="-0.00000 -1.00000 -0.00000" />
+  </joint>
+  <joint name="br_calf_joint" type="revolute">
+    <limit lower="-1.134" upper="1.047" effort="0.045" velocity="10.00000" />
+    <origin rpy="0.00000 0.00000 0.00000" xyz="-0.00000 0.00080 -0.05990" />
+    <parent link="right_hind_thigh_Y" />
+    <child link="right_hind_calf" />
+    <axis xyz="-0.00000 -1.00000 -0.00000" />
+  </joint>
+
+
+
+  <joint name="bl_hip_joint" type="revolute">
+    <limit lower="-0.6" upper="0.6" effort="0.045" velocity="10.00000" />
+    <origin rpy="0.00000 0.00000 0.00000" xyz="0.10059 -0.02250 -0.02207" />
+    <parent link="body_fixed" />
+    <child link="left_hind_shoulder_X" />
+    <axis xyz="1.00000 -0.00000 -0.00000" />
+  </joint>
+  <joint name="bl_thigh_joint" type="revolute">
+    <limit lower="-1.22" upper="1.91" effort="0.045" velocity="10.00000" />
+    <origin rpy="0.00000 0.00000 0.00000" xyz="0.01853 -0.04956 0.00002" />
+    <parent link="left_hind_shoulder_X" />
+    <child link="left_hind_thigh_Y" />
+    <axis xyz="-0.00000 -1.00000 -0.00000" />
+  </joint>
+
+  <joint name="bl_calf_joint" type="revolute">
+    <limit lower="-1.134" upper="1.047" effort="0.045" velocity="10.00000" />
+    <origin rpy="0.00000 0.00000 0.00000" xyz="-0.00000 0.00000 -0.05994" />
+    <parent link="left_hind_thigh_Y" />
+    <child link="left_hind_calf" />
+    <axis xyz="-0.00000 -1.00000 -0.00000" />
+  </joint>
+
+  <joint name="arm_yaw_joint" type="revolute">
+    <limit lower="-3.14000" upper="3.14000" effort="0.045" velocity="10.00000" />
+    <origin rpy="0.00000 0.00000 0.00000" xyz="-0.02471 0.00000 0.01166" />
+    <parent link="body_fixed" />
+    <child link="claw_base_Z" />
+    <axis xyz="0.00000 0.00000 1.00000" />
+  </joint>
+  <joint name="arm_thigh_joint" type="revolute">
+    <limit lower="-1.632" upper="1.3" effort="0.045" velocity="10.00000" />
+    <origin rpy="0.00000 0.00000 0.00000" xyz="-0.00000 0.01853 0.01538" />
+    <parent link="claw_base_Z" />
+    <child link="claw_mainarm_Y" />
+    <axis xyz="0.00000 -1.00000 0.00000" />
+  </joint>
+
+
+  <joint name="arm_calf_joint" type="revolute">
+    <limit lower="-0.95" upper="1.57" effort="0.045" velocity="10.00000" />
+    <origin rpy="0.00000 0.00000 0.00000" xyz="0.00000 -0.00000 0.05990" />
+    <parent link="claw_mainarm_Y" />
+    <child link="claw_forearm_Y" />
+    <axis xyz="0.00000 -1.00000 0.00000" />
+  </joint>
+
+  <joint name="hand_right_joint" type="prismatic">
+    <limit lower="-0.0" upper="0.02" effort="0.045" velocity="10.00000" />
+    <origin rpy="0.00000 0.00000 0.00000" xyz="-0.09570 -0.00124 0.01837" />
+    <parent link="claw_forearm_Y" />
+    <child link="right_claw" />
+    <axis xyz="0.00000 1.00000 0.00000" />
+  </joint>
+
+  <joint name="hand_left_joint" type="prismatic">
+    <limit lower="-0.0" upper="0.03" effort="0.045" velocity="10.00000" />
+    <origin rpy="0.00000 0.00000 0.00000" xyz="-0.09570 -0.03531 0.01837" />
+    <parent link="claw_forearm_Y" />
+    <child link="left_claw" />
+    <axis xyz="0.00000 -1.00000 0.00000" />
+    <mimic joint="hand_right_joint"/>
+  </joint>
+
+
+  <link name="body_fixed">
+    <visual name="body.001">
+      <material name="金属" />
+      <origin rpy="-0.00000 -0.00000 0.00000" xyz="-0.03051 0.00000 -0.03361" />
+      <geometry>
+        <mesh filename="../meshes/dae/fillet_3_006.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </visual>
+    <!-- <collision name="body_fixed_collision">
+      <origin rpy="-0.00000 -0.00000 0.00000" xyz="-0.03051 0.00000 -0.03361" />
+      <geometry>
+        <mesh filename="../meshes/dae/fillet_3_006.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </collision> -->
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.28377" />
+      <inertia ixx="0.00012081" ixy="2.6e-7" ixz="-2.87e-6" iyy="0.00114744" iyz="1.5e-7" izz="0.00120568" />
+    </inertial>
+  </link>
+  <link name="claw_base_Z">
+    <visual name="clawbase">
+      <material name="法兰盘" />
+      <origin rpy="1.57080 0.00000 0.00000" xyz="-0.00000 -0.00000 -0.00631" />
+      <geometry>
+        <mesh filename="../meshes/dae/cut_extrude_2_007.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </visual>
+    <!-- <collision name="claw_base_Z_collision">
+      <origin rpy="1.57080 0.00000 0.00000" xyz="-0.00000 -0.00000 -0.00631" />
+      <geometry>
+        <mesh filename="../meshes/dae/cut_extrude_2_007.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </collision> -->
+    <inertial>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <mass value="0.01000" />
+      <inertia ixx="0.000010" ixy="0" ixz="0" iyy="0.000010" iyz="0" izz="0.000010" />
+    </inertial>
+  </link>
+  <link name="left_hind_thigh_Y">
+    <visual name="lhthigh">
+      <material name="法兰盘.021" />
+      <origin rpy="1.57080 0.00000 -1.57080" xyz="0.01154 0.01895 -0.02997" />
+      <geometry>
+        <mesh filename="../meshes/dae/fillet_2_004.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </visual>
+    <!-- <collision name="left_hind_thigh_Y_collision">
+      <origin rpy="1.57080 0.00000 -1.57080" xyz="0.01154 0.01895 -0.02997" />
+      <geometry>
+        <mesh filename="../meshes/dae/fillet_2_004.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </collision> -->
+    <inertial>
+      <origin xyz="-0.0044577 -0.01867 -0.02975" rpy="0 0 0" />
+      <mass value="0.06234296" />
+      <inertia ixx="4.672E-05" ixy="-1E-7" ixz="1.1E-7" iyy="4.153E-05" iyz="0" izz="9.971E-06" />
+    </inertial>
+  </link>
+  <link name="left_hind_calf">
+    <visual name="lhcalf">
+      <material name="法兰盘.022" />
+      <origin rpy="1.57080 0.00000 0.00000" xyz="-0.07150 0.01858 -0.02255" />
+      <geometry>
+        <mesh filename="../meshes/dae/cut_extrude_8_003.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </visual>
+    <collision name="left_hind_calf_collision">
+      <origin rpy="1.57080 0.00000 0.00000" xyz="-0.07150 0.01858 -0.02255" />
+      <!-- <geometry>
+        <mesh filename="../meshes/dae/cut_extrude_8_003.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry> -->
+      <geometry>
+        <sphere radius="0.01"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="-0.0166167777717992 -0.0188249730950225 -0.026917070061231" rpy="0 0 0" />
+      <mass value="0.02225" />
+      <inertia ixx="1.399E-05" ixy="0" ixz="-1.09E-06" iyy="1.366E-05" iyz="0" izz="1.5E-06" />
+    </inertial>
+  </link>
+  <link name="right_front_shoulder_X">
+      <visual name="rhshoulder">
+      <material name="法兰盘.010" />
+      <origin rpy="1.57080 0.00000 0.00000" xyz="0.01853 0.01416 0.00000" />
+      <geometry>
+        <mesh filename="../meshes/dae/left_shoulder_convert_1_002.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </visual>
+    <!-- <collision name="right_front_shoulder_X_collision">
+      <origin rpy="1.57080 0.00000 0.00000" xyz="0.01853 0.01416 0.00000" />
+      <geometry>
+        <mesh filename="../meshes/dae/left_shoulder_convert_1_002.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </collision> -->
+    <inertial>
+      <origin xyz="-0.014472 -0.025087 0.0092733" rpy="0 0 0" />
+      <mass value="0.0196" />
+      <inertia ixx="5.89E-06" ixy="5.7E-07" ixz="-2.6E-07" iyy="3.79E-06" iyz="1.16E-06" izz="6.89E-06" />
+    </inertial>
+  </link>
+  <link name="right_front_thigh_Y">
+    <visual name="rfthigh">
+      <material name="电机塑胶.002" />
+      <origin rpy="1.57080 0.00000 1.57080" xyz="0.01154 -0.01815 -0.02995" />
+      <geometry>
+        <mesh filename="../meshes/dae/thigh_bracket_2_2_001.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </visual>
+    <!-- <collision name="right_front_thigh_Y_collision">
+      <origin rpy="1.57080 0.00000 1.57080" xyz="0.01154 -0.01815 -0.02995" />
+      <geometry>
+        <mesh filename="../meshes/dae/thigh_bracket_2_2_001.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </collision> -->
+    <inertial>
+      <origin xyz="-0.0044234 0.01867 -0.02975" rpy="0 0 0" />
+      <mass value="0.06234296" />
+      <inertia ixx="4.672E-05" ixy="1E-7" ixz="1.1E-7" iyy="4.153E-05" iyz="0" izz="9.971E-06" />
+    </inertial>
+  </link>
+  <link name="right_front_calf">
+    <visual name="rfcalf">
+      <material name="法兰盘.016" />
+      <origin rpy="1.57080 0.00000 0.00000" xyz="-0.07151 -0.01858 -0.02256" />
+      <geometry>
+        <mesh filename="../meshes/dae/cut_extrude_8_001.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </visual>
+    <collision name="right_front_calf_collision">
+      <origin rpy="1.57080 0.00000 0.00000" xyz="-0.07151 -0.01858 -0.02256" />
+      <!-- <geometry>
+        <mesh filename="../meshes/dae/cut_extrude_8_001.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry> -->
+      <geometry>
+        <sphere radius="0.01"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="-0.016617 0.018825 -0.026917" rpy="0 0 0" />
+      <mass value="0.02225" />
+      <inertia ixx="1.399E-05" ixy="0" ixz="-1.09E-06" iyy="1.366E-05" iyz="0" izz="1.5E-06" />
+    </inertial>
+  </link>
+  <link name="right_hind_shoulder_X">
+    <visual name="rhshoulder">
+      <material name="法兰盘.010" />
+      <origin rpy="1.57080 0.00000 0.00000" xyz="0.01853 0.01416 0.00000" />
+      <geometry>
+        <mesh filename="../meshes/dae/left_shoulder_convert_1_002.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </visual>
+    <!-- <collision name="right_hind_shoulder_X_collision">
+      <origin rpy="1.57080 0.00000 0.00000" xyz="0.01853 0.01416 0.00000" />
+      <geometry>
+        <mesh filename="../meshes/dae/left_shoulder_convert_1_002.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </collision> -->
+    <inertial>
+      <origin xyz="-0.0139720126736417 -0.0250874024827749 0.00927327962848533" rpy="0 0 0" />
+      <mass value="0.0196" />
+      <inertia ixx="5.89E-06" ixy="5.7E-07" ixz="-2.6E-07" iyy="3.79E-06" iyz="1.16E-06" izz="6.89E-06" />
+    </inertial>
+  </link>
+  <link name="right_hind_thigh_Y">
+    <visual name="rhthigh">
+      <material name="法兰盘.024" />
+      <origin rpy="1.57080 -0.00000 1.57080" xyz="0.01154 -0.01815 -0.02995" />
+      <geometry>
+        <mesh filename="../meshes/dae/thigh_bracket_2_2_002.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </visual>
+    <!-- <collision name="right_hind_thigh_Y_collision">
+      <origin rpy="1.57080 -0.00000 1.57080" xyz="0.01154 -0.01815 -0.02995" />
+      <geometry>
+        <mesh filename="../meshes/dae/thigh_bracket_2_2_002.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </collision> -->
+    <inertial>
+      <origin xyz="-0.0044234 0.01867 -0.02975" rpy="0 0 0" />
+      <mass value="0.06234296" />
+      <inertia ixx="4.672E-05" ixy="1E-7" ixz="1.1E-7" iyy="4.153E-05" iyz="0" izz="9.971E-06" />
+    </inertial>
+  </link>
+  <link name="right_hind_calf">
+    <visual name="rhcalf">
+      <material name="法兰盘.027" />
+      <origin rpy="1.57080 0.00000 0.00000" xyz="-0.07150 -0.01857 -0.02320" />
+      <geometry>
+        <mesh filename="../meshes/dae/cut_extrude_8_004.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </visual>
+    <collision name="right_hind_calf_collision">
+      <origin rpy="1.57080 0.00000 0.00000" xyz="-0.07150 -0.01857 -0.02320" />
+      <!-- <geometry>
+        <mesh filename="../meshes/dae/cut_extrude_8_004.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry> -->
+      <geometry>
+        <sphere radius="0.01"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="-0.016617 0.018825 -0.026917" rpy="0 0 0" />
+      <mass value="0.02225" />
+      <inertia ixx="1.399E-05" ixy="0" ixz="-1.09E-06" iyy="1.366E-05" iyz="0" izz="1.5E-06" />
+    </inertial>
+  </link>
+  <link name="claw_mainarm_Y">
+    <visual name="clawmainarm">
+      <material name="法兰盘.002" />
+      <origin rpy="0.00000 0.00000 0.00000" xyz="0.09773 -0.01624 -0.30290" />
+      <geometry>
+        <mesh filename="../meshes/dae/NONE.4641.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </visual>
+    <!-- <collision name="claw_mainarm_Y_collision">
+      <origin rpy="0.00000 0.00000 0.00000" xyz="0.09773 -0.01624 -0.30290" />
+      <geometry>
+        <mesh filename="../meshes/dae/NONE.4641.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </collision> -->
+    <inertial>
+      <origin xyz="-0.02975 0.01867 -0.0044577" rpy="0 0 0" />
+      <mass value="0.018812" />
+      <inertia ixx="9.71E-06" ixy="0" ixz="1.1E-7" iyy="4.153E-05" iyz="1E-7" izz="4.672E-05" />
+    </inertial>
+  </link>
+  <link name="claw_forearm_Y">
+    <visual name="clawforearm">
+      <material name="法兰盘.001" />
+      <origin rpy="1.57080 0.00000 0.00000" xyz="0.00850 -0.01827 0.01267" />
+      <geometry>
+        <mesh filename="../meshes/dae/cut_extrude_12_001.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </visual>
+    <!-- <collision name="claw_forearm_Y_collision">
+      <origin rpy="1.57080 0.00000 0.00000" xyz="0.00850 -0.01827 0.01267" />
+      <geometry>
+        <mesh filename="../meshes/dae/cut_extrude_12_001.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </collision> -->
+    <inertial>
+      <origin xyz="0.02333 0.018563 0.017123" rpy="0 0 0" />
+      <mass value="0.017297" />
+      <inertia ixx="3.72E-06" ixy="4E-08" ixz="-3.38E-06" iyy="2.722E-05" iyz="-1E-08" izz="2.638E-05" />
+    </inertial>
+  </link>
+  <link name="left_claw">
+    <visual name="lcalw">
+      <material name="夹子" />
+      <origin rpy="1.57080 0.00000 1.57080" xyz="0.02080 -0.01490 -0.00200" />
+      <geometry>
+        <mesh filename="../meshes/dae/fillet_9_009.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </visual>
+    <collision name="left_claw_collision">
+      <origin rpy="1.57080 0.00000 1.57080" xyz="0.02080 -0.01490 -0.00200" />
+      <geometry>
+        <mesh filename="../meshes/dae/fillet_9_009.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0.011578 0.0072849 0.0068499" rpy="0 0 0" />
+      <mass value="0.0010815" />
+      <inertia ixx="1.5564E-07" ixy="-6.1813E-08" ixz="-4.8265E-08" iyy="2.117E-07" iyz="-3.5622E-08" izz="2.476E-07" />
+    </inertial>
+  </link>
+  <link name="right_claw">
+    <visual name="rclaw">
+      <material name="夹子" />
+      <origin rpy="-1.57080 0.00000 -1.57080" xyz="0.02080 0.01490 0.00200" />
+      <geometry>
+        <mesh filename="../meshes/dae/fillet_9_010.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </visual>
+    <collision name="right_claw_collision">
+      <origin rpy="-1.57080 0.00000 -1.57080" xyz="0.02080 0.01490 0.00200" />
+      <geometry>
+        <mesh filename="../meshes/dae/fillet_9_010.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="0.011578 -0.0072849 -0.0068499" rpy="0 0 0" />
+      <mass value="0.0010815" />
+      <inertia ixx="1.5564E-07" ixy="6.1813E-08" ixz="4.8265E-08" iyy="2.117E-07" iyz="-3.5622E-08" izz="2.476E-07" />
+    </inertial>
+  </link>
+  <link name="left_front_shoulder_X">
+    <visual name="fl_shoulder">
+      <material name="法兰盘.008" />
+      <origin rpy="1.57080 0.00000 0.00000" xyz="0.01852 -0.01416 -0.00000" />
+      <geometry>
+        <mesh filename="../meshes/dae/convert_1_003.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </visual>
+    <!-- <collision name="left_front_shoulder_X_collision">
+      <origin rpy="1.57080 0.00000 0.00000" xyz="0.01852 -0.01416 -0.00000" />
+      <geometry>
+        <mesh filename="../meshes/dae/convert_1_003.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </collision> -->
+    <inertial>
+      <origin xyz="-0.014472 0.025089 0.0092733" rpy="0 0 0" />
+      <mass value="0.0196" />
+      <inertia ixx="5.89E-06" ixy="-5.7E-07" ixz="-2.6E-07" iyy="3.79E-06" iyz="-1.16E-06" izz="6.89E-06" />
+    </inertial>
+  </link>
+  <link name="left_front_thigh_Y">
+    <visual name="lfthigh">
+      <material name="法兰盘.015" />
+      <origin rpy="1.57080 0.00000 -1.57080" xyz="0.01154 0.01895 -0.02995" />
+      <geometry>
+        <mesh filename="../meshes/dae/fillet_2_003.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </visual>
+    <!-- <collision name="left_front_thigh_Y_collision">
+      <origin rpy="1.57080 0.00000 -1.57080" xyz="0.01154 0.01895 -0.02995" />
+      <geometry>
+        <mesh filename="../meshes/dae/fillet_2_003.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </collision> -->
+    <inertial>
+      <origin xyz="-0.00135 -0.01796 -0.02975" rpy="0 0 0" />
+      <mass value="0.06234296" />
+      <inertia ixx="4.672E-05" ixy="-1E-7" ixz="1.1E-7" iyy="4.153E-05" iyz="0" izz="9.971E-06" />
+    </inertial>
+  </link>
+  <link name="left_front_calf">
+    <visual name="lfcalf">
+      <material name="法兰盘.019" />
+      <origin rpy="1.57080 0.00000 0.00000" xyz="-0.07149 0.01858 -0.02256" />
+      <geometry>
+        <mesh filename="../meshes/dae/cut_extrude_8_002.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </visual>
+    <collision name="left_front_calf_collision">
+      <origin rpy="1.57080 0.00000 0.00000" xyz="-0.07149 0.01858 -0.02256" />
+      <!-- <geometry>
+        <mesh filename="../meshes/dae/cut_extrude_8_002.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry> -->
+      <geometry>
+        <sphere radius="0.01"/>
+      </geometry>
+    </collision>
+    <inertial>
+      <origin xyz="-0.016617 -0.018825 -0.026917" rpy="0 0 0" />
+      <mass value="0.02225" />
+      <inertia ixx="1.399E-05" ixy="0" ixz="-1.09E-06" iyy="1.366E-05" iyz="0" izz="1.5E-06" />
+    </inertial>
+  </link>
+  <link name="left_hind_shoulder_X">
+    <visual name="lhshoulder">
+      <material name="法兰盘.008" />
+      <origin rpy="1.57080 0.00000 0.00000" xyz="0.01852 -0.01416 -0.00000" />
+      <geometry>
+        <mesh filename="../meshes/dae/convert_1_003.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </visual>
+    <!-- <collision name="left_hind_shoulder_X_collision">
+      <origin rpy="1.57080 0.00000 0.00000" xyz="0.01852 -0.01416 -0.00000" />
+      <geometry>
+        <mesh filename="../meshes/dae/convert_1_003.dae" scale="1.00000 1.00000 1.00000" />
+      </geometry>
+    </collision> -->
+    <inertial>
+      <origin xyz="-0.0139719978465255 0.0250874114611194 0.00927328906936255" rpy="0 0 0" />
+      <mass value="0.0196" />
+      <inertia ixx="5.89E-06" ixy="-5.7E-07" ixz="-2.6E-07" iyy="3.79E-06" iyz="-1.16E-06" izz="6.89E-06" />
+    </inertial>
+  </link>
+  <material name="夹子">
+    <color rgba="0.75000 0.75000 0.75000 1.00000" />
+  </material>
+  <material name="法兰盘">
+    <color rgba="0.82000 0.82000 0.82000 1.00000" />
+  </material>
+  <material name="法兰盘.001">
+    <color rgba="0.82000 0.82000 0.82000 1.00000" />
+  </material>
+  <material name="法兰盘.002">
+    <color rgba="0.82000 0.82000 0.82000 1.00000" />
+  </material>
+  <material name="法兰盘.008">
+    <color rgba="0.82000 0.82000 0.82000 1.00000" />
+  </material>
+  <material name="法兰盘.010">
+    <color rgba="0.82000 0.82000 0.82000 1.00000" />
+  </material>
+  <material name="法兰盘.015">
+    <color rgba="0.82000 0.82000 0.82000 1.00000" />
+  </material>
+  <material name="法兰盘.016">
+    <color rgba="0.82000 0.82000 0.82000 1.00000" />
+  </material>
+  <material name="法兰盘.019">
+    <color rgba="0.82000 0.82000 0.82000 1.00000" />
+  </material>
+  <material name="法兰盘.021">
+    <color rgba="0.82000 0.82000 0.82000 1.00000" />
+  </material>
+  <material name="法兰盘.022">
+    <color rgba="0.82000 0.82000 0.82000 1.00000" />
+  </material>
+  <material name="法兰盘.024">
+    <color rgba="0.82000 0.82000 0.82000 1.00000" />
+  </material>
+  <material name="法兰盘.027">
+    <color rgba="0.82000 0.82000 0.82000 1.00000" />
+  </material>
+  <material name="电机塑胶.002">
+    <color rgba="0.70000 0.70000 0.70000 1.00000" />
+  </material>
+  <material name="金属">
+    <color rgba="0.88000 0.88000 0.88000 1.00000" />
+  </material>
+</robot>

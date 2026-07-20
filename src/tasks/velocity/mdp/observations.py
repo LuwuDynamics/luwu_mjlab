@@ -44,6 +44,11 @@ def foot_contact_forces(env: ManagerBasedRlEnv, sensor_name: str) -> torch.Tenso
   return torch.sign(forces_flat) * torch.log1p(torch.abs(forces_flat))
 
 
+def constant_zeros(env: ManagerBasedRlEnv, size: int) -> torch.Tensor:
+  """Return a zero tensor; used to keep obs layout when a term is unused."""
+  return torch.zeros(env.num_envs, size, device=env.device)
+
+
 def phase(env: ManagerBasedRlEnv, period: float, command_name: str) -> torch.Tensor:
     global_phase = (env.episode_length_buf * env.step_dt) % period / period
     phase = torch.zeros(env.num_envs, 2, device=env.device)

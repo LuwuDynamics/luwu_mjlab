@@ -29,22 +29,22 @@ pip install -e .
 
 ```bash
 # 列出陆吾任务
-python scripts/list_envs.py --keyword XGOMini
+python scripts/list_envs.py --keyword Mini2S
 
 # 零动作 sanity check
-python scripts/play.py XGOMini-Flat --agent zero
+python scripts/play.py Mini2S-Walk-Flat --agent zero
 ```
 
 ## 4. 开始训练
 
 ```bash
-python scripts/train.py XGOMini-Flat --env.scene.num-envs=4096
+python scripts/train.py Mini2S-Walk-Flat --env.scene.num-envs=4096
 ```
 
-日志目录：`logs/rsl_rl/xgomini_velocity/`（TensorBoard）。
+日志目录：`logs/rsl_rl/mini2s_velocity_walk/`（TensorBoard）。
 
 查看 TensorBoard：
 
 ```bash
-tensorboard --logdir logs/rsl_rl/xgomini_velocity
+tensorboard --logdir logs/rsl_rl/mini2s_velocity_walk
 ```

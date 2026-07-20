@@ -1,6 +1,6 @@
 # luwu_mjlab
 
-**luwu_mjlab** is the reinforcement learning training environment for [Luwu Dynamics (陆吾智能)](https://www.xgorobot.com/), built to train and evaluate locomotion policies for quadruped robots (XGOMini) in MuJoCo simulation.
+**luwu_mjlab** is the reinforcement learning training environment for [Luwu Dynamics (陆吾智能)](https://www.xgorobot.com/), built to train and evaluate locomotion policies for quadruped robots (Mini2S / Mini2SW / Lite3) in MuJoCo simulation.
 
 The project is based on **[mjlab](https://github.com/mujocolab/mjlab)** v1.2.0, which combines Isaac Lab-style APIs with GPU-accelerated MuJoCo Warp. luwu_mjlab extends mjlab with Luwu robot models and task configurations.
 
@@ -28,15 +28,22 @@ pip install -e .
 Verify:
 
 ```bash
-python scripts/list_envs.py --keyword XGOMini
-python scripts/play.py XGOMini-Flat --agent zero
+python scripts/list_envs.py --keyword Mini2S
+python scripts/play.py Mini2S-Walk-Flat --agent zero
 ```
 
 Train:
 
 ```bash
-python scripts/train.py XGOMini-Flat --env.scene.num-envs=4096
-tensorboard --logdir logs/rsl_rl/xgomini_velocity
+python scripts/train.py Mini2S-Walk-Flat --env.scene.num-envs=4096
+tensorboard --logdir logs/rsl_rl/mini2s_velocity_walk
+```
+
+Recovery (turn-over) task:
+
+```bash
+python scripts/train.py Mini2S-Turn-Flat --env.scene.num-envs=4096
+tensorboard --logdir logs/rsl_rl/mini2s_velocity_turn
 ```
 
 ### Windows
@@ -72,7 +79,7 @@ Verify PyTorch: `python -c "import torch; print(torch.cuda.is_available())"` (sh
 **4. Smoke test**
 
 ```cmd
-python scripts/play.py XGOMini-Flat --agent zero --num-envs 4
+python scripts/play.py Mini2S-Walk-Flat --agent zero --num-envs 4
 ```
 
 Use `--viewer viser` for web-based viewer when no display is available.
@@ -120,10 +127,10 @@ After installation completes, restart the runtime (Runtime → Restart and run a
 
 ```python
 %cd luwu_mjlab
-!python scripts/train.py XGOMini-Flat --env.scene.num-envs=4096 > output.log 2>&1 &
+!python scripts/train.py Mini2S-Walk-Flat --env.scene.num-envs=4096 > output.log 2>&1 &
 
 %load_ext tensorboard
-%tensorboard --logdir ./logs/rsl_rl/xgomini_velocity
+%tensorboard --logdir ./logs/rsl_rl/mini2s_velocity_walk
 ```
 
 ## Training
@@ -132,8 +139,19 @@ After installation completes, restart the runtime (Runtime → Restart and run a
 python scripts/train.py <task_id> [--overrides...]
 
 Example:
-python scripts/train.py XGOMini-Flat --env.scene.num-envs 4096
+python scripts/train.py Mini2S-Walk-Flat --env.scene.num-envs 4096
+python scripts/train.py Mini2S-Turn-Flat --env.scene.num-envs 4096
 ```
+
+Registered Mini2S tasks:
+
+| Task ID | Description |
+|---|---|
+| `Mini2S-Walk-Flat` | Flat-terrain velocity tracking (walking) |
+| `Mini2S-Turn-Flat` | Flat-terrain recovery / turn-over |
+| `Mini2SW-Walk-Flat` | Mini2SW wheeled variant — walking |
+| `Mini2SW-Turn-Flat` | Mini2SW wheeled variant — recovery |
+| `Lite3-Walk-Flat` | Lite3 walking |
 
 Two-stage tyro CLI: first argument selects a task, remaining arguments override `TrainConfig` fields (a frozen dataclass holding `env` + `agent`).
 
@@ -155,7 +173,7 @@ Common options:
 ```bash
 
 # Load latest checkpoint
-python scripts/play.py XGOMini-Flat
+python scripts/play.py Mini2S-Walk-Flat
 
 The simulation can be viewed in a browser at http://localhost:8080
 ╭────── viser (listening *:8080) ───────╮
@@ -166,11 +184,15 @@ The simulation can be viewed in a browser at http://localhost:8080
 ╰───────────────────────────────────────╯
 
 # Load a specific checkpoint
-python scripts/play.py XGOMini-Flat \
-  --checkpoint-file logs/rsl_rl/xgomini_velocity/2026-xx-xx_xx-xx-xx/model_xx.pt
+python scripts/play.py Mini2S-Walk-Flat \
+  --checkpoint-file logs/rsl_rl/mini2s_velocity_walk/2026-xx-xx_xx-xx-xx/model_xx.pt
+
+# Recovery task
+python scripts/play.py Mini2S-Turn-Flat \
+  --checkpoint-file logs/rsl_rl/mini2s_velocity_turn/2026-xx-xx_xx-xx-xx/model_xx.pt
 
 # MDP sanity check (zero actions, no checkpoint needed)
-python scripts/play.py XGOMini-Flat --agent zero
+python scripts/play.py Mini2S-Walk-Flat --agent zero
 ```
 
 ## Project Structure
@@ -183,15 +205,21 @@ scripts/
   visualize_terrain.py  # Terrain preview
 
 src/
-  assets/robots/xgomini/  # MJCF XML, STL/DAE meshes, robot config constants
+  assets/robots/
+    mini2s/               # Mini2S MJCF XML, meshes, config constants
+    mini2sw/              # Mini2SW wheeled variant
+    lite3/                # Lite3
   assets/motions/          # Reference motion files for tracking tasks (.npz)
   tasks/
     __init__.py            # Auto-registers tasks via import_packages()
     velocity/              # Velocity-tracking locomotion task
       velocity_env_cfg.py           # make_velocity_env_cfg() factory
-      config/xgomini/
-        env_cfgs.py                 # rough / flat environment configs
-        rl_cfg.py                   # PPO hyperparameters
+      config/
+        mini2s_walk/                # Mini2S flat walking
+        mini2s_turn/                # Mini2S flat recovery
+        mini2sw_walk/               # Mini2SW flat walking
+        mini2sw_turn/               # Mini2SW flat recovery
+        lite3_walk/                 # Lite3 flat walking
       mdp/                          # observations, rewards, terminations, curriculums, commands
       rl/runner.py                  # VelocityOnPolicyRunner (ONNX export)
     tracking/              # Motion-imitation tracking task (mirrors velocity/ structure)
@@ -212,6 +240,8 @@ Python **3.11**, versions pinned in `setup.py`:
 ## Logging & Checkpoints
 
 - Path: `logs/rsl_rl/<experiment_name>/<timestamp>/`; checkpoints: `model_<iteration>.pt`
+- Mini2S walking: `logs/rsl_rl/mini2s_velocity_walk/`
+- Mini2S recovery: `logs/rsl_rl/mini2s_velocity_turn/`
 - Config YAMLs written to `params/` (skipped when resuming)
 - Default runner: `MjlabOnPolicyRunner`; `VelocityOnPolicyRunner` adds ONNX export + wandb
 
