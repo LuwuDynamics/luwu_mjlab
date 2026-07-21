@@ -3,3 +3,10 @@
 outputs
 logs
 wandb
+# Python 编译缓存文件
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.py[cod]
+*$py.class

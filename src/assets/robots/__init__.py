@@ -1,8 +1,3 @@
-from .xgomini.xgomini_constants import (
-  get_xgomini_robot_cfg as get_xgomini_robot_cfg,
-)
-
-
 from .mini2s.mini2s_constants import (
   get_mini2s_robot_cfg as get_mini2s_robot_cfg,
 )
