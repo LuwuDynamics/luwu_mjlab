@@ -170,7 +170,7 @@ def mini2sw_flat_turn_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
 
   cfg.rewards["joint_vel_l2"] = RewardTermCfg(
     func=mdp.joint_vel_l2,
-    weight=-3e-2,
+    weight=-5e-3,
   )
 
   cfg.rewards["body_orientation_l2"].weight = -0.1
@@ -195,7 +195,7 @@ def mini2sw_flat_turn_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
   )
   cfg.rewards["action_rate_l2"] = RewardTermCfg(
     func=mdp.action_rate_l2,
-    weight=-0.2,
+    weight=-0.25,
   )
 
   cfg.terminations.pop("fell_over", None)
