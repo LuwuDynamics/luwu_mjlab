@@ -132,18 +132,20 @@ class UniformVelocityCommand(CommandTerm):
       enabled = server.gui.add_checkbox("Enable", initial_value=False)
 
       for label, max_val in axes:
+        # Allow 0 (e.g. play configs that lock yaw): viser requires
+        # min <= initial_value <= max, so Max slider min must be 0.0.
         max_input = server.gui.add_slider(
           f"Max {label}",
           initial_value=max_val,
           step=0.1,
-          min=0.1,
+          min=0.0,
           max=10.0,
         )
         slider = server.gui.add_slider(
           label,
           min=-max_val,
           max=max_val,
-          step=0.05,
+          step=0.01,
           initial_value=0.0,
         )
 

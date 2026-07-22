@@ -12,7 +12,7 @@ from mjlab.managers.event_manager import EventTermCfg
 from mjlab.managers.reward_manager import RewardTermCfg
 from mjlab.sensor import ContactMatch, ContactSensorCfg
 from mjlab.tasks.velocity import mdp
-from mjlab.tasks.velocity.mdp import UniformVelocityCommandCfg
+from src.tasks.velocity.mdp import UniformVelocityCommandCfg
 
 FOOT_NAMES = ("FL", "FR", "RL", "RR")
 SHANK_GEOM_NAMES = tuple(f"{name}_shank_collision" for name in FOOT_NAMES)

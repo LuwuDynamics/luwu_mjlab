@@ -12,7 +12,7 @@ from mjlab.managers.reward_manager import RewardTermCfg
 from mjlab.managers.scene_entity_config import SceneEntityCfg
 from mjlab.sensor import ContactMatch, ContactSensorCfg
 from mjlab.tasks.velocity import mdp
-from mjlab.tasks.velocity.mdp import UniformVelocityCommandCfg
+from src.tasks.velocity.mdp import UniformVelocityCommandCfg
 
 import src.tasks.velocity.mdp as src_mdp
 

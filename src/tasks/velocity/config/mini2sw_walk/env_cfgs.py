@@ -12,7 +12,7 @@ from mjlab.managers.event_manager import EventTermCfg
 from mjlab.managers.reward_manager import RewardTermCfg
 from mjlab.sensor import ContactMatch, ContactSensorCfg
 from mjlab.tasks.velocity import mdp
-from mjlab.tasks.velocity.mdp import UniformVelocityCommandCfg
+from src.tasks.velocity.mdp import UniformVelocityCommandCfg
 
 
 def _mini2sw_walk_base_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
