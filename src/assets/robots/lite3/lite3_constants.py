@@ -50,7 +50,7 @@ LITE3_XML_ACTUATOR = XmlPositionActuatorCfg(
 INIT_STATE = EntityCfg.InitialStateCfg(
   pos=(0.0, 0.0, 0.10),
   joint_pos={
-    "^(FL|FR|RR|RL)_thigh_joint$": 1.0,
+    "^(FL|FR|RR|RL)_thigh_joint$": 0.95,
     "^(FL|FR|RR|RL)_shank_joint$": 0.0,
     "^(FL|FR|RR|RL)_hip_joint$": 0.0,
     "mainarm_joint": -1.55,

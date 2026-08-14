@@ -83,7 +83,7 @@ def _lite3_walk_base_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
     r"^forearm_joint$": 0.1,
   }
   cfg.rewards["pose"].params["std_walking"] = {
-    r".*(FL|FR|RL|RR)_hip_joint.*": 0.15,
+    r".*(FL|FR|RL|RR)_hip_joint.*": 0.2,
     r".*(FL|FR|RL|RR)_thigh_joint.*": 0.4,
     r".*(FL|FR|RL|RR)_shank_joint.*": 0.4,
     r"^mainarm_joint$": 0.1,
@@ -97,7 +97,7 @@ def _lite3_walk_base_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
     r"^forearm_joint$": 0.1,
   }
   cfg.rewards["pose"].params["walking_threshold"] = 0.05
-  cfg.rewards["pose"].params["running_threshold"] = 0.3
+  cfg.rewards["pose"].params["running_threshold"] = 0.2
 
   cfg.rewards["track_linear_velocity"].weight = 4.0
   cfg.rewards["track_linear_velocity"].params["std"] = 0.15
@@ -112,7 +112,7 @@ def _lite3_walk_base_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
 
   cfg.rewards["foot_gait"].params["offset"] = [0.0, 0.5, 0.0, 0.5]
   cfg.rewards["body_orientation_l2"].params["asset_cfg"].body_names = ("body",)
-  cfg.rewards["body_orientation_l2"].weight = -3.0
+  cfg.rewards["body_orientation_l2"].weight = -2.0
   cfg.rewards["body_ang_vel"].params["asset_cfg"].body_names = ("body",)
   cfg.rewards["foot_clearance"].params["asset_cfg"].site_names = FOOT_NAMES
   cfg.rewards["foot_clearance"].params["target_height"] = 0.02
@@ -180,7 +180,7 @@ def lite3_flat_walk_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
   twist_cmd.heading_command = False
   twist_cmd.rel_heading_envs = 0.1
   twist_cmd.rel_standing_envs = 0.0
-  twist_cmd.ranges.lin_vel_x = (-0.2, 0.3)
+  twist_cmd.ranges.lin_vel_x = (-0.2, 0.4)
   twist_cmd.ranges.lin_vel_y = (-0.15, 0.15)
   twist_cmd.ranges.ang_vel_z = (-0.8, 0.8)
   twist_cmd.ranges.heading = None
@@ -189,7 +189,7 @@ def lite3_flat_walk_env_cfg(play: bool = False) -> ManagerBasedRlEnvCfg:
   cfg.curriculum.pop("command_vel", None)
 
   if play:
-    twist_cmd.ranges.lin_vel_x = (-0.2, 0.3)
+    twist_cmd.ranges.lin_vel_x = (-0.2, 0.4)
     twist_cmd.ranges.lin_vel_y = (-0.15, 0.15)
     twist_cmd.ranges.ang_vel_z = (-0.8, 0.8)
     cfg.scene.num_envs = 1
