@@ -126,6 +126,8 @@ class UniformVelocityCommand(CommandTerm):
     name: str,
     server: "viser.ViserServer",
     get_env_idx: Callable[[], int],
+    on_change: Callable[[], None] | None = None,
+    request_action: Callable[[str, object], None] | None = None,
   ) -> None:
     """Create velocity joystick sliders in the Viser viewer."""
     from viser import Icon
