@@ -96,7 +96,7 @@ class MotionTrackingOnPolicyRunner(MjlabOnPolicyRunner):
     self.export_motion_policy_to_onnx(policy_path, filename)
     self.export_policy_to_onnx(policy_path, "policy.onnx")
     run_name: str = (
-      wandb.run.name if self.logger.logger_type == "wandb" and wandb.run else "local"
+      wandb.run.name if self.logger.logger_type == "WandbLogWriter" and wandb.run else "local"
     )  # type: ignore[assignment]
     metadata = get_base_metadata(self.env.unwrapped, run_name)
     motion_term = cast(
@@ -109,7 +109,7 @@ class MotionTrackingOnPolicyRunner(MjlabOnPolicyRunner):
       }
     )
     attach_metadata_to_onnx(os.path.join(policy_path, filename), metadata)
-    if self.logger.logger_type in ["wandb"]:
+    if self.logger.logger_type == "WandbLogWriter":
       wandb.save(policy_path + filename, base_path=os.path.dirname(policy_path))
       if self.registry_name is not None:
         wandb.run.use_artifact(self.registry_name)  # type: ignore

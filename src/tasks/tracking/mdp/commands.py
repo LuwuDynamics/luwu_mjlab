@@ -360,24 +360,26 @@ class MotionCommand(CommandTerm):
     )
     self.robot.write_root_state_to_sim(root_state, env_ids=env_ids)
 
-    self.robot.clear_state(env_ids=env_ids)
+    self.robot.reset(env_ids=env_ids)
 
-  def _update_command(self):
-    self.time_steps += 1
-    env_ids = torch.where(self.time_steps >= self.motion.time_step_total)[0]
-    if env_ids.numel() > 0:
-      self._resample_command(env_ids)
+  def _update_command(self, env_ids: torch.Tensor | None = None) -> None:
+    update_ids = slice(None) if env_ids is None else env_ids
+    if env_ids is None:
+      self.time_steps += 1
+      expired_ids = torch.where(self.time_steps >= self.motion.time_step_total)[0]
+      if expired_ids.numel() > 0:
+        self._resample_command(expired_ids)
 
-    anchor_pos_w_repeat = self.anchor_pos_w[:, None, :].repeat(
+    anchor_pos_w_repeat = self.anchor_pos_w[update_ids, None, :].repeat(
       1, len(self.cfg.body_names), 1
     )
-    anchor_quat_w_repeat = self.anchor_quat_w[:, None, :].repeat(
+    anchor_quat_w_repeat = self.anchor_quat_w[update_ids, None, :].repeat(
       1, len(self.cfg.body_names), 1
     )
-    robot_anchor_pos_w_repeat = self.robot_anchor_pos_w[:, None, :].repeat(
+    robot_anchor_pos_w_repeat = self.robot_anchor_pos_w[update_ids, None, :].repeat(
       1, len(self.cfg.body_names), 1
     )
-    robot_anchor_quat_w_repeat = self.robot_anchor_quat_w[:, None, :].repeat(
+    robot_anchor_quat_w_repeat = self.robot_anchor_quat_w[update_ids, None, :].repeat(
       1, len(self.cfg.body_names), 1
     )
 
@@ -387,12 +389,14 @@ class MotionCommand(CommandTerm):
       quat_mul(robot_anchor_quat_w_repeat, quat_inv(anchor_quat_w_repeat))
     )
 
-    self.body_quat_relative_w = quat_mul(delta_ori_w, self.body_quat_w)
-    self.body_pos_relative_w = delta_pos_w + quat_apply(
-      delta_ori_w, self.body_pos_w - anchor_pos_w_repeat
+    self.body_quat_relative_w[update_ids] = quat_mul(
+      delta_ori_w, self.body_quat_w[update_ids]
+    )
+    self.body_pos_relative_w[update_ids] = delta_pos_w + quat_apply(
+      delta_ori_w, self.body_pos_w[update_ids] - anchor_pos_w_repeat
     )
 
-    if self.cfg.sampling_mode == "adaptive":
+    if self.cfg.sampling_mode == "adaptive" and env_ids is None:
       self.bin_failed_count = (
         self.cfg.adaptive_alpha * self._current_bin_failed
         + (1 - self.cfg.adaptive_alpha) * self.bin_failed_count

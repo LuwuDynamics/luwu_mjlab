@@ -2,7 +2,7 @@
 
 **luwu_mjlab** 是 [陆吾智能（Luwu Dynamics）](https://www.xgorobot.com/) 的强化学习训练环境，基于 MuJoCo 仿真训练四足机器人（Mini2S / Mini2SW / Lite3）的运动控制策略。
 
-底层框架 **[mjlab](https://github.com/mujocolab/mjlab)** v1.2.0，融合 Isaac Lab 风格 API 与 GPU 加速的 MuJoCo Warp。本项目在其基础上扩展了陆吾机器人模型和任务配置。
+底层框架 **[mjlab](https://github.com/mujocolab/mjlab)** v1.6.0，融合 Isaac Lab 风格 API 与 GPU 加速的 MuJoCo Warp。本项目在其基础上扩展了陆吾机器人模型和任务配置。
 
 ## 效果预览
 
@@ -10,6 +10,13 @@
 |------|------|
 | ![xgomini walk sim](doc/gif/xgomini_walk_sim.gif) | ![xgomini walk real](doc/gif/xgomini_walk_real.gif) |
 | ![xgomini getup sim](doc/gif/xgomini_getup_sim.gif) | ![xgomini getup real](doc/gif/xgomini_getup_real.gif) |
+
+## Rider2 与 Tars
+
+`Rider2-Balance-Flat` 和 `Tars-Getup` 可通过项目入口列出、训练、回放、
+评估和调试，运行上游 CPU MuJoCo 训练代码及原有控制逻辑，可直接加载上游权重。
+
+参见 [Rider2 与 Tars 的环境和命令](doc/native_tasks.md)。
 
 ## 安装
 
@@ -82,11 +89,11 @@ pip install -e .
 python scripts/play.py Mini2S-Walk-Flat --agent zero --num-envs 4
 ```
 
-> **warp-lang 必须 <1.14**，因 mjlab 1.2.0 依赖 `wp.context.runtime`，新版本已移除该 API。
+> 仿真依赖需成套安装：mjlab 1.6.0、MuJoCo / MuJoCo Warp 3.11.0、warp-lang 1.17.0。`pip install -e .` 会安装这些固定版本。
 
 常见问题：
 - CUDA 不可用 → 检查驱动 + `nvidia-smi`
-- warp 初始化失败 → `pip show warp-lang` 确认版本 1.12.1
+- warp 初始化失败 → `pip show warp-lang` 确认版本 1.17.0
 - DLL 加载失败 → 确保 `%CONDA_PREFIX%\Library\bin` 在 PATH 前面
 
 彻底重装：
@@ -229,10 +236,10 @@ src/
 Python **3.11**，全部锁定版本（`setup.py`）：
 | 包 | 版本 | 说明 |
 |---|---|---|
-| `mjlab` | 1.2.0 | RL 环境框架 |
-| `mujoco` | 3.6.0 | 物理引擎 |
-| `mujoco-warp` | 3.6.0 | GPU 加速 MuJoCo |
-| `warp-lang` | 1.12.1 | GPU 计算 DSL（必须 <1.14） |
+| `mjlab` | 1.6.0 | RL 环境框架 |
+| `mujoco` | 3.11.0 | 物理引擎 |
+| `mujoco-warp` | 3.11.0 | GPU 加速 MuJoCo |
+| `warp-lang` | 1.17.0 | GPU 计算 DSL |
 | `scipy` | ≥1.17.0 | 科学计算 |
 
 

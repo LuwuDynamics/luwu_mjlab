@@ -2,7 +2,7 @@
 
 **luwu_mjlab** is the reinforcement learning training environment for [Luwu Dynamics (陆吾智能)](https://www.xgorobot.com/), built to train and evaluate locomotion policies for quadruped robots (Mini2S / Mini2SW / Lite3) in MuJoCo simulation.
 
-The project is based on **[mjlab](https://github.com/mujocolab/mjlab)** v1.2.0, which combines Isaac Lab-style APIs with GPU-accelerated MuJoCo Warp. luwu_mjlab extends mjlab with Luwu robot models and task configurations.
+The project is based on **[mjlab](https://github.com/mujocolab/mjlab)** v1.6.0, which combines Isaac Lab-style APIs with GPU-accelerated MuJoCo Warp. luwu_mjlab extends mjlab with Luwu robot models and task configurations.
 
 ## Demo
 
@@ -10,6 +10,14 @@ The project is based on **[mjlab](https://github.com/mujocolab/mjlab)** v1.2.0, 
 |------------|------------|
 | ![xgomini walk sim](doc/gif/xgomini_walk_sim.gif) | ![xgomini walk real](doc/gif/xgomini_walk_real.gif) |
 | ![xgomini getup sim](doc/gif/xgomini_getup_sim.gif) | ![xgomini getup real](doc/gif/xgomini_getup_real.gif) |
+
+## Rider2 and Tars
+
+`Rider2-Balance-Flat` and `Tars-Getup` are available through the project’s
+list, train, play, evaluation, and diagnostics commands. They run the upstream
+CPU MuJoCo training code with its original checkpoints and controller logic.
+
+See [Rider2 and Tars setup and commands](doc/native_tasks.md).
 
 ## Installation
 
@@ -84,11 +92,11 @@ python scripts/play.py Mini2S-Walk-Flat --agent zero --num-envs 4
 
 Use `--viewer viser` for web-based viewer when no display is available.
 
-> **warp-lang must be <1.14**, as mjlab 1.2.0 depends on `wp.context.runtime` which was removed in newer versions.
+> Keep the simulation stack aligned: mjlab 1.6.0, MuJoCo / MuJoCo Warp 3.11.0, and warp-lang 1.17.0. `pip install -e .` installs these pinned versions.
 
 Common issues:
 - CUDA not available → check driver + `nvidia-smi`
-- warp initialization failed → `pip show warp-lang` to confirm version 1.12.1
+- warp initialization failed → `pip show warp-lang` to confirm version 1.17.0
 - DLL load failed → ensure `%CONDA_PREFIX%\Library\bin` is early in PATH
 
 Clean reinstall:
@@ -231,10 +239,10 @@ Python **3.11**, versions pinned in `setup.py`:
 
 | Package | Version | Description |
 |---|---|---|
-| `mjlab` | 1.2.0 | RL environment framework |
-| `mujoco` | 3.6.0 | Physics engine |
-| `mujoco-warp` | 3.6.0 | GPU-accelerated MuJoCo |
-| `warp-lang` | 1.12.1 | GPU computing DSL (must be <1.14) |
+| `mjlab` | 1.6.0 | RL environment framework |
+| `mujoco` | 3.11.0 | Physics engine |
+| `mujoco-warp` | 3.11.0 | GPU-accelerated MuJoCo |
+| `warp-lang` | 1.17.0 | GPU computing DSL |
 | `scipy` | ≥1.17.0 | Scientific computing |
 
 ## Logging & Checkpoints

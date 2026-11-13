@@ -169,6 +169,13 @@ def run_play(task_id: str, cfg: PlayConfig):
 
 
 def main():
+  if __package__:
+    from .native_task import dispatch
+  else:
+    from native_task import dispatch
+
+  dispatch("play")
+
   # Parse first argument to choose the task.
   # Import tasks to populate the registry.
   import mjlab.tasks  # noqa: F401

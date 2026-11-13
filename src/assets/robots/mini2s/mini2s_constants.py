@@ -5,9 +5,8 @@ from pathlib import Path
 import mujoco
 
 from src import SRC_PATH
-from mjlab.actuator import XmlPositionActuatorCfg
+from mjlab.actuator import XmlActuatorCfg
 from mjlab.entity import EntityArticulationInfoCfg, EntityCfg
-from mjlab.utils.os import update_assets
 from mjlab.utils.spec_config import CollisionCfg
 
 ##
@@ -25,7 +24,9 @@ def get_assets(meshdir: str) -> dict[str, bytes]:
   assets: dict[str, bytes] = {}
   meshdir_clean = meshdir.rstrip("/")
   mesh_path = (MINI2S_XML.parent / meshdir_clean).resolve()
-  update_assets(assets, mesh_path, meshdir_clean)
+  for asset in mesh_path.iterdir():
+    if asset.is_file():
+      assets[f"{meshdir_clean}/{asset.name}"] = asset.read_bytes()
   return assets
 
 
@@ -39,7 +40,7 @@ def get_spec() -> mujoco.MjSpec:
 # Actuator config.
 ##
 
-MINI2S_XML_ACTUATOR = XmlPositionActuatorCfg(
+MINI2S_XML_ACTUATOR = XmlActuatorCfg(
   target_names_expr=(".*",),
 )
 
@@ -82,7 +83,7 @@ MINI2S_WALK_COLLISION = CollisionCfg(
 MINI2S_TURN_COLLISION = CollisionCfg(
   geom_names_expr=(r".*_collision",),
   condim={_CALF_FOOT_REGEX: 3, r".*_collision": 1},
-  priority={_CALF_FOOT_REGEX: 1},
+  priority={_CALF_FOOT_REGEX: 1, ".*": 0},
   friction={_CALF_FOOT_REGEX: (0.6,)},
   solimp={_CALF_FOOT_REGEX: (0.9, 0.95, 0.023)},
   contype=1,

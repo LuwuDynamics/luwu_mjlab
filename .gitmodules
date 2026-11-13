@@ -1,0 +1,6 @@
+[submodule "third_party/xgorider2_rl"]
+	path = third_party/xgorider2_rl
+	url = https://github.com/LuwuDynamics/xgorider2_rl.git
+[submodule "third_party/rig_tars_rl"]
+	path = third_party/rig_tars_rl
+	url = https://github.com/LuwuDynamics/rig_tars_rl.git
