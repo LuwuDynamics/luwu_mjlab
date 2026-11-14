@@ -5,7 +5,7 @@
 | `Rider2-Balance-Flat` | [xgorider2_rl](https://github.com/LuwuDynamics/xgorider2_rl) | MuJoCo 3.16、SB3 PPO、C++ 控制器 |
 | `Tars-Getup` | [rig_tars_rl](https://github.com/LuwuDynamics/rig_tars_rl) | MuJoCo 3.17、原版 PyTorch PPO、C 控制器仿真 |
 
-两个陆吾官方任务位于 `src/tasks/`，使用 Git 子模块固定各自的提交。两个任务通过 luwu_mjlab CLI 调用原生 CPU 流程，使用上游模型、奖励、观测、训练算法与权重格式。项目原有四足任务使用 mjlab 1.6.0 和 MuJoCo Warp。
+两个任务位于 `src/tasks/`，使用 Git 子模块固定各自的提交。两个任务通过 luwu_mjlab CLI 调用原生 CPU 流程，使用上游模型、奖励、观测、训练算法与权重格式。项目原有四足任务使用 mjlab 1.6.0 和 MuJoCo Warp。
 
 ## 环境
 

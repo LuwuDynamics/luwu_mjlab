@@ -233,9 +233,9 @@ src/
       mdp/                          # observations, rewards, terminations, curriculums, commands
       rl/runner.py                  # VelocityOnPolicyRunner (ONNX 导出)
     tracking/              # 动作模仿跟踪任务（结构同 velocity/）
-    rider2/                # Rider2 官方任务（Git 子模块）
+    rider2/
       training/train2.py
-    tars/                  # Tars 官方任务（Git 子模块）
+    tars/
       tars_rl/rl/ppo_getup.py
 ```
 

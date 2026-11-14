@@ -235,9 +235,9 @@ src/
       mdp/                          # observations, rewards, terminations, curriculums, commands
       rl/runner.py                  # VelocityOnPolicyRunner (ONNX export)
     tracking/              # Motion-imitation tracking task (mirrors velocity/ structure)
-    rider2/                # Rider2 official task (Git submodule)
+    rider2/
       training/train2.py
-    tars/                  # Tars official task (Git submodule)
+    tars/
       tars_rl/rl/ppo_getup.py
 ```
 
