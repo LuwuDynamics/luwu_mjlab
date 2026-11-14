@@ -12,12 +12,12 @@ RIDER = "Rider2-Balance-Flat"
 TARS = "Tars-Getup"
 TASKS = {
   RIDER: (
-    "rider", "third_party/xgorider2_rl/training",
+    "rider", "src/tasks/rider2/training",
     {"train": "train2.py", "play": "viewer2.py", "evaluate": "evaluate2.py",
      "debug": "tools/sim_frf_check.py"},
   ),
   TARS: (
-    "tars", "third_party/rig_tars_rl/tars_rl",
+    "tars", "src/tasks/tars/tars_rl",
     {"train": "rl/ppo_getup.py", "play": str(ROOT / "scripts/tars_replay.py"),
      "evaluate": "rl/eval_getup.py", "debug": "rl/getup_audit.py",
      "firmware": "rl/eval_getup_c.py"},

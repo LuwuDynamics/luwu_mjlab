@@ -7,7 +7,7 @@ import sys
 
 import numpy as np
 
-ROOT = Path(__file__).resolve().parents[1] / "third_party/rig_tars_rl/tars_rl"
+ROOT = Path(__file__).resolve().parents[1] / "src/tasks/tars/tars_rl"
 sys.path.insert(0, str(ROOT / "rl"))
 from eval_getup import DT, GetupEnv, STRESS, cal_kw, load_policy  # noqa: E402
 from render_utils import render_strip  # noqa: E402

@@ -1,6 +1,6 @@
-[submodule "third_party/xgorider2_rl"]
-	path = third_party/xgorider2_rl
+[submodule "xgorider2_rl"]
+	path = src/tasks/rider2
 	url = https://github.com/LuwuDynamics/xgorider2_rl.git
-[submodule "third_party/rig_tars_rl"]
-	path = third_party/rig_tars_rl
+[submodule "rig_tars_rl"]
+	path = src/tasks/tars
 	url = https://github.com/LuwuDynamics/rig_tars_rl.git

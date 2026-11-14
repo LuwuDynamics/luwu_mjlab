@@ -233,10 +233,10 @@ src/
       mdp/                          # observations, rewards, terminations, curriculums, commands
       rl/runner.py                  # VelocityOnPolicyRunner (ONNX 导出)
     tracking/              # 动作模仿跟踪任务（结构同 velocity/）
-
-third_party/
-  xgorider2_rl/training/train2.py         # Rider2 训练入口
-  rig_tars_rl/tars_rl/rl/ppo_getup.py    # Tars 训练入口
+    rider2/                # Rider2 官方任务（Git 子模块）
+      training/train2.py
+    tars/                  # Tars 官方任务（Git 子模块）
+      tars_rl/rl/ppo_getup.py
 ```
 
 ## 关键依赖

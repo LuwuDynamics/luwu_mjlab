@@ -5,7 +5,7 @@
 | `Rider2-Balance-Flat` | [xgorider2_rl](https://github.com/LuwuDynamics/xgorider2_rl) | MuJoCo 3.16、SB3 PPO、C++ 控制器 |
 | `Tars-Getup` | [rig_tars_rl](https://github.com/LuwuDynamics/rig_tars_rl) | MuJoCo 3.17、原版 PyTorch PPO、C 控制器仿真 |
 
-Git 子模块固定上游提交。两个任务通过 luwu_mjlab CLI 调用原生 CPU 流程，使用上游模型、奖励、观测、训练算法与权重格式。项目原有四足任务使用 mjlab 1.6.0 和 MuJoCo Warp。
+两个陆吾官方任务位于 `src/tasks/`，使用 Git 子模块固定各自的提交。两个任务通过 luwu_mjlab CLI 调用原生 CPU 流程，使用上游模型、奖励、观测、训练算法与权重格式。项目原有四足任务使用 mjlab 1.6.0 和 MuJoCo Warp。
 
 ## 环境
 
@@ -23,7 +23,7 @@ PY="$PWD/../venvs/mjlab/bin/python"
 以下训练命令使用上游发布配方。评估可指定 SB3 checkpoint，原生窗口可读取上游发布或训练后导出的 C 权重。窗口需要 X11/Wayland。
 
 ```bash
-RIDER="$PWD/third_party/xgorider2_rl/training"
+RIDER="$PWD/src/tasks/rider2/training"
 RUN="$PWD/logs/rider2"
 "$PY" scripts/train.py Rider2-Balance-Flat --output "$RUN" \
   --envs 5 --steps 4000000 --eval-every 500000 --eval-seeds 8 \
@@ -39,7 +39,7 @@ RUN="$PWD/logs/rider2"
 以下命令从上游第二阶段 checkpoint 开始训练起身策略，然后评估并生成仰躺起身的回放图。评估也可使用上游第三阶段的 `checkpoints/getup_ppo_c3/final_it500.pt`。
 
 ```bash
-TARS="$PWD/third_party/rig_tars_rl/tars_rl"
+TARS="$PWD/src/tasks/tars/tars_rl"
 RUN="$PWD/logs/tars-getup"
 "$PY" scripts/train.py Tars-Getup --init "$TARS/checkpoints/getup_ppo_c2/final_it600.pt" \
   --out "$RUN" --iters 500 --seed 0 --lr 0.00015 --lr_max 0.0003 \

@@ -235,10 +235,10 @@ src/
       mdp/                          # observations, rewards, terminations, curriculums, commands
       rl/runner.py                  # VelocityOnPolicyRunner (ONNX export)
     tracking/              # Motion-imitation tracking task (mirrors velocity/ structure)
-
-third_party/
-  xgorider2_rl/training/train2.py         # Rider2 training entry point
-  rig_tars_rl/tars_rl/rl/ppo_getup.py    # Tars training entry point
+    rider2/                # Rider2 official task (Git submodule)
+      training/train2.py
+    tars/                  # Tars official task (Git submodule)
+      tars_rl/rl/ppo_getup.py
 ```
 
 ## Key Dependencies
