@@ -209,7 +209,7 @@ python scripts/play.py Mini2S-Walk-Flat --agent zero
 
 ```
 scripts/
-  train.py              # 训练入口 (RSL-RL PPO)
+  train.py              # 统一训练入口
   play.py               # 推理/评估入口
   list_envs.py          # 列出已注册任务
   visualize_terrain.py  # 地形预览
@@ -233,6 +233,10 @@ src/
       mdp/                          # observations, rewards, terminations, curriculums, commands
       rl/runner.py                  # VelocityOnPolicyRunner (ONNX 导出)
     tracking/              # 动作模仿跟踪任务（结构同 velocity/）
+
+third_party/
+  xgorider2_rl/training/train2.py         # Rider2 训练入口
+  rig_tars_rl/tars_rl/rl/ppo_getup.py    # Tars 训练入口
 ```
 
 ## 关键依赖

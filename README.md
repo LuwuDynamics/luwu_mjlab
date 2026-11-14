@@ -211,7 +211,7 @@ python scripts/play.py Mini2S-Walk-Flat --agent zero
 
 ```
 scripts/
-  train.py              # Training entry point (RSL-RL PPO)
+  train.py              # Shared training entry point
   play.py               # Inference / evaluation entry point
   list_envs.py          # List registered tasks
   visualize_terrain.py  # Terrain preview
@@ -235,6 +235,10 @@ src/
       mdp/                          # observations, rewards, terminations, curriculums, commands
       rl/runner.py                  # VelocityOnPolicyRunner (ONNX export)
     tracking/              # Motion-imitation tracking task (mirrors velocity/ structure)
+
+third_party/
+  xgorider2_rl/training/train2.py         # Rider2 training entry point
+  rig_tars_rl/tars_rl/rl/ppo_getup.py    # Tars training entry point
 ```
 
 ## Key Dependencies
