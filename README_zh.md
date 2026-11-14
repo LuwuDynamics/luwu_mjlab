@@ -11,13 +11,6 @@
 | ![xgomini walk sim](doc/gif/xgomini_walk_sim.gif) | ![xgomini walk real](doc/gif/xgomini_walk_real.gif) |
 | ![xgomini getup sim](doc/gif/xgomini_getup_sim.gif) | ![xgomini getup real](doc/gif/xgomini_getup_real.gif) |
 
-## Rider2 与 Tars
-
-`Rider2-Balance-Flat` 和 `Tars-Getup` 可通过项目入口列出、训练、回放、
-评估和调试，运行上游 CPU MuJoCo 训练代码及原有控制逻辑，可直接加载上游权重。
-
-参见 [Rider2 与 Tars 的环境和命令](doc/native_tasks.md)。
-
 ## 安装
 
 ### Linux（Ubuntu 22.04）
@@ -173,6 +166,17 @@ CLI 两阶段解析：第一参数选任务 → 剩余参数覆盖 `TrainConfig`
 | `--video` | 录制训练视频 |
 | `--gpu-ids all` / `[0,1]` | GPU 选择 |
 
+### Rider2 与 Tars 训练入口
+
+配置好[任务环境](doc/native_tasks.md#环境)后，在仓库根目录运行。
+
+```bash
+git submodule update --init
+python scripts/train.py Rider2-Balance-Flat --output "$PWD/logs/rider2"
+python scripts/train.py Tars-Getup --out "$PWD/logs/tars-getup"
+```
+
+在任务命令后加 `--help` 可查看参数。
 
 ## 验证
 

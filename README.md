@@ -11,14 +11,6 @@ The project is based on **[mjlab](https://github.com/mujocolab/mjlab)** v1.6.0, 
 | ![xgomini walk sim](doc/gif/xgomini_walk_sim.gif) | ![xgomini walk real](doc/gif/xgomini_walk_real.gif) |
 | ![xgomini getup sim](doc/gif/xgomini_getup_sim.gif) | ![xgomini getup real](doc/gif/xgomini_getup_real.gif) |
 
-## Rider2 and Tars
-
-`Rider2-Balance-Flat` and `Tars-Getup` are available through the project’s
-list, train, play, evaluation, and diagnostics commands. They run the upstream
-CPU MuJoCo training code with its original checkpoints and controller logic.
-
-See [Rider2 and Tars setup and commands](doc/native_tasks.md).
-
 ## Installation
 
 ### Linux (Ubuntu 22.04)
@@ -175,6 +167,18 @@ Common options:
 | `--motion-file <path>` | Required for tracking tasks |
 | `--video` | Record training videos |
 | `--gpu-ids all` / `[0,1]` | GPU selection |
+
+### Rider2 and Tars training
+
+Run from the repository root after setting up the [task environments](doc/native_tasks.md#环境).
+
+```bash
+git submodule update --init
+python scripts/train.py Rider2-Balance-Flat --output "$PWD/logs/rider2"
+python scripts/train.py Tars-Getup --out "$PWD/logs/tars-getup"
+```
+
+Append `--help` to a task command to see its options.
 
 ## Evaluation
 
