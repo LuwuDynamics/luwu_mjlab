@@ -8,6 +8,11 @@ import mjlab.tasks  # noqa: F401
 import src.tasks
 from mjlab.tasks.registry import list_tasks
 
+if __package__:
+  from .native_task import TASKS
+else:
+  from native_task import TASKS
+
 
 def list_environments(keyword: str | None = None):
   """List all registered environments.
@@ -15,19 +20,19 @@ def list_environments(keyword: str | None = None):
   Args:
     keyword: Optional filter to only show environments containing this keyword.
   """
-  table = PrettyTable(["#", "Task ID"])
+  table = PrettyTable(["#", "Task ID", "Backend"])
   table.title = "Available Environments in mjlab"
   table.align["Task ID"] = "l"
 
   all_tasks = list_tasks()
   idx = 0
-  for task_id in all_tasks:
+  for task_id in sorted(set(all_tasks) | TASKS.keys()):
     try:
       # Optionally filter by keyword.
       if keyword and keyword.lower() not in task_id.lower():
         continue
 
-      table.add_row([idx + 1, task_id])
+      table.add_row([idx + 1, task_id, "MuJoCo CPU" if task_id in TASKS else "mjlab"])
       idx += 1
     except Exception:
       continue

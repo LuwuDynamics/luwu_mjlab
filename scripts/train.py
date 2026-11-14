@@ -196,6 +196,13 @@ def launch_training(task_id: str, args: TrainConfig | None = None):
 
 
 def main():
+  if __package__:
+    from .native_task import dispatch
+  else:
+    from native_task import dispatch
+
+  dispatch("train")
+
   # Parse first argument to choose the task.
   # Import tasks to populate the registry.
   import mjlab.tasks  # noqa: F401

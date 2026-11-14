@@ -96,16 +96,27 @@ class UniformVelocityCommand(CommandTerm):
       )
       self.robot.write_root_state_to_sim(root_state, init_vel_env_ids)
 
-  def _update_command(self) -> None:
+  def _update_command(self, env_ids: torch.Tensor | None = None) -> None:
+    update_ids = slice(None) if env_ids is None else env_ids
     if self.cfg.heading_command:
-      self.heading_error = wrap_to_pi(self.heading_target - self.robot.data.heading_w)
-      env_ids = self.is_heading_env.nonzero(as_tuple=False).flatten()
-      self.vel_command_b[env_ids, 2] = torch.clip(
-        self.cfg.heading_control_stiffness * self.heading_error[env_ids],
+      self.heading_error[update_ids] = wrap_to_pi(
+        self.heading_target[update_ids] - self.robot.data.heading_w[update_ids]
+      )
+      heading_env_ids = (
+        self.is_heading_env.nonzero(as_tuple=False).flatten()
+        if env_ids is None
+        else env_ids[self.is_heading_env[env_ids]]
+      )
+      self.vel_command_b[heading_env_ids, 2] = torch.clip(
+        self.cfg.heading_control_stiffness * self.heading_error[heading_env_ids],
         min=self.cfg.ranges.ang_vel_z[0],
         max=self.cfg.ranges.ang_vel_z[1],
       )
-    standing_env_ids = self.is_standing_env.nonzero(as_tuple=False).flatten()
+    standing_env_ids = (
+      self.is_standing_env.nonzero(as_tuple=False).flatten()
+      if env_ids is None
+      else env_ids[self.is_standing_env[env_ids]]
+    )
     self.vel_command_b[standing_env_ids, :] = 0.0
 
   # GUI.
@@ -115,6 +126,8 @@ class UniformVelocityCommand(CommandTerm):
     name: str,
     server: "viser.ViserServer",
     get_env_idx: Callable[[], int],
+    on_change: Callable[[], None] | None = None,
+    request_action: Callable[[str, object], None] | None = None,
   ) -> None:
     """Create velocity joystick sliders in the Viser viewer."""
     from viser import Icon
@@ -168,11 +181,13 @@ class UniformVelocityCommand(CommandTerm):
     self._joystick_sliders = sliders
     self._joystick_get_env_idx = get_env_idx
 
-  def compute(self, dt: float) -> None:
-    super().compute(dt)
+  def compute(self, dt: float, env_ids: torch.Tensor | None = None) -> None:
+    super().compute(dt, env_ids)
     if self._joystick_enabled is not None and self._joystick_enabled.value:
       assert self._joystick_get_env_idx is not None
       idx = self._joystick_get_env_idx()
+      if env_ids is not None and not (env_ids == idx).any():
+        return
       for i, s in enumerate(self._joystick_sliders):
         self.vel_command_b[idx, i] = s.value
 

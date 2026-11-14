@@ -2,7 +2,7 @@
 
 **luwu_mjlab** is the reinforcement learning training environment for [Luwu Dynamics (陆吾智能)](https://www.xgorobot.com/), built to train and evaluate locomotion policies for quadruped robots (Mini2S / Mini2SW / Lite3) in MuJoCo simulation.
 
-The project is based on **[mjlab](https://github.com/mujocolab/mjlab)** v1.2.0, which combines Isaac Lab-style APIs with GPU-accelerated MuJoCo Warp. luwu_mjlab extends mjlab with Luwu robot models and task configurations.
+The project is based on **[mjlab](https://github.com/mujocolab/mjlab)** v1.6.0, which combines Isaac Lab-style APIs with GPU-accelerated MuJoCo Warp. luwu_mjlab extends mjlab with Luwu robot models and task configurations.
 
 ## Demo
 
@@ -84,11 +84,11 @@ python scripts/play.py Mini2S-Walk-Flat --agent zero --num-envs 4
 
 Use `--viewer viser` for web-based viewer when no display is available.
 
-> **warp-lang must be <1.14**, as mjlab 1.2.0 depends on `wp.context.runtime` which was removed in newer versions.
+> Keep the simulation stack aligned: mjlab 1.6.0, MuJoCo / MuJoCo Warp 3.11.0, and warp-lang 1.17.0. `pip install -e .` installs these pinned versions.
 
 Common issues:
 - CUDA not available → check driver + `nvidia-smi`
-- warp initialization failed → `pip show warp-lang` to confirm version 1.12.1
+- warp initialization failed → `pip show warp-lang` to confirm version 1.17.0
 - DLL load failed → ensure `%CONDA_PREFIX%\Library\bin` is early in PATH
 
 Clean reinstall:
@@ -168,6 +168,18 @@ Common options:
 | `--video` | Record training videos |
 | `--gpu-ids all` / `[0,1]` | GPU selection |
 
+### Rider2 and Tars training
+
+Run from the repository root after setting up the [task environments](doc/native_tasks.md#环境).
+
+```bash
+git submodule update --init
+python scripts/train.py Rider2-Balance-Flat --output "$PWD/logs/rider2"
+python scripts/train.py Tars-Getup --out "$PWD/logs/tars-getup"
+```
+
+Append `--help` to a task command to see its options.
+
 ## Evaluation
 
 ```bash
@@ -199,7 +211,7 @@ python scripts/play.py Mini2S-Walk-Flat --agent zero
 
 ```
 scripts/
-  train.py              # Training entry point (RSL-RL PPO)
+  train.py              # Shared training entry point
   play.py               # Inference / evaluation entry point
   list_envs.py          # List registered tasks
   visualize_terrain.py  # Terrain preview
@@ -223,6 +235,10 @@ src/
       mdp/                          # observations, rewards, terminations, curriculums, commands
       rl/runner.py                  # VelocityOnPolicyRunner (ONNX export)
     tracking/              # Motion-imitation tracking task (mirrors velocity/ structure)
+    rider2/
+      training/train2.py
+    tars/
+      tars_rl/rl/ppo_getup.py
 ```
 
 ## Key Dependencies
@@ -231,10 +247,10 @@ Python **3.11**, versions pinned in `setup.py`:
 
 | Package | Version | Description |
 |---|---|---|
-| `mjlab` | 1.2.0 | RL environment framework |
-| `mujoco` | 3.6.0 | Physics engine |
-| `mujoco-warp` | 3.6.0 | GPU-accelerated MuJoCo |
-| `warp-lang` | 1.12.1 | GPU computing DSL (must be <1.14) |
+| `mjlab` | 1.6.0 | RL environment framework |
+| `mujoco` | 3.11.0 | Physics engine |
+| `mujoco-warp` | 3.11.0 | GPU-accelerated MuJoCo |
+| `warp-lang` | 1.17.0 | GPU computing DSL |
 | `scipy` | ≥1.17.0 | Scientific computing |
 
 ## Logging & Checkpoints

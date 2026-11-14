@@ -2,7 +2,7 @@
 
 **luwu_mjlab** 是 [陆吾智能（Luwu Dynamics）](https://www.xgorobot.com/) 的强化学习训练环境，基于 MuJoCo 仿真训练四足机器人（Mini2S / Mini2SW / Lite3）的运动控制策略。
 
-底层框架 **[mjlab](https://github.com/mujocolab/mjlab)** v1.2.0，融合 Isaac Lab 风格 API 与 GPU 加速的 MuJoCo Warp。本项目在其基础上扩展了陆吾机器人模型和任务配置。
+底层框架 **[mjlab](https://github.com/mujocolab/mjlab)** v1.6.0，融合 Isaac Lab 风格 API 与 GPU 加速的 MuJoCo Warp。本项目在其基础上扩展了陆吾机器人模型和任务配置。
 
 ## 效果预览
 
@@ -82,11 +82,11 @@ pip install -e .
 python scripts/play.py Mini2S-Walk-Flat --agent zero --num-envs 4
 ```
 
-> **warp-lang 必须 <1.14**，因 mjlab 1.2.0 依赖 `wp.context.runtime`，新版本已移除该 API。
+> 仿真依赖需成套安装：mjlab 1.6.0、MuJoCo / MuJoCo Warp 3.11.0、warp-lang 1.17.0。`pip install -e .` 会安装这些固定版本。
 
 常见问题：
 - CUDA 不可用 → 检查驱动 + `nvidia-smi`
-- warp 初始化失败 → `pip show warp-lang` 确认版本 1.12.1
+- warp 初始化失败 → `pip show warp-lang` 确认版本 1.17.0
 - DLL 加载失败 → 确保 `%CONDA_PREFIX%\Library\bin` 在 PATH 前面
 
 彻底重装：
@@ -166,6 +166,17 @@ CLI 两阶段解析：第一参数选任务 → 剩余参数覆盖 `TrainConfig`
 | `--video` | 录制训练视频 |
 | `--gpu-ids all` / `[0,1]` | GPU 选择 |
 
+### Rider2 与 Tars 训练入口
+
+配置好[任务环境](doc/native_tasks.md#环境)后，在仓库根目录运行。
+
+```bash
+git submodule update --init
+python scripts/train.py Rider2-Balance-Flat --output "$PWD/logs/rider2"
+python scripts/train.py Tars-Getup --out "$PWD/logs/tars-getup"
+```
+
+在任务命令后加 `--help` 可查看参数。
 
 ## 验证
 
@@ -198,7 +209,7 @@ python scripts/play.py Mini2S-Walk-Flat --agent zero
 
 ```
 scripts/
-  train.py              # 训练入口 (RSL-RL PPO)
+  train.py              # 统一训练入口
   play.py               # 推理/评估入口
   list_envs.py          # 列出已注册任务
   visualize_terrain.py  # 地形预览
@@ -222,6 +233,10 @@ src/
       mdp/                          # observations, rewards, terminations, curriculums, commands
       rl/runner.py                  # VelocityOnPolicyRunner (ONNX 导出)
     tracking/              # 动作模仿跟踪任务（结构同 velocity/）
+    rider2/
+      training/train2.py
+    tars/
+      tars_rl/rl/ppo_getup.py
 ```
 
 ## 关键依赖
@@ -229,10 +244,10 @@ src/
 Python **3.11**，全部锁定版本（`setup.py`）：
 | 包 | 版本 | 说明 |
 |---|---|---|
-| `mjlab` | 1.2.0 | RL 环境框架 |
-| `mujoco` | 3.6.0 | 物理引擎 |
-| `mujoco-warp` | 3.6.0 | GPU 加速 MuJoCo |
-| `warp-lang` | 1.12.1 | GPU 计算 DSL（必须 <1.14） |
+| `mjlab` | 1.6.0 | RL 环境框架 |
+| `mujoco` | 3.11.0 | 物理引擎 |
+| `mujoco-warp` | 3.11.0 | GPU 加速 MuJoCo |
+| `warp-lang` | 1.17.0 | GPU 计算 DSL |
 | `scipy` | ≥1.17.0 | 科学计算 |
 
 

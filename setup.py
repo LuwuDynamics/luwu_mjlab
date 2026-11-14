@@ -2,13 +2,12 @@
 
 from setuptools import setup, find_packages
 
-# Pin versions aligned with a known-good unitree_rl_mjlab stack.
-# mjlab 1.2.0 uses wp.context.runtime; warp-lang>=1.14 removes that API.
+# Keep the simulation stack aligned with mjlab 1.6.
 INSTALL_REQUIRES = [
-    "mjlab==1.2.0",
-    "mujoco==3.6.0",
-    "mujoco-warp==3.6.0",
-    "warp-lang==1.12.1",
+    "mjlab==1.6.0",
+    "mujoco==3.11.0",
+    "mujoco-warp==3.11.0",
+    "warp-lang==1.17.0",
     "scipy>=1.17.0",
 ]
 

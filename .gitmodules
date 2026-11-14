@@ -1,0 +1,6 @@
+[submodule "xgorider2_rl"]
+	path = src/tasks/rider2
+	url = https://github.com/LuwuDynamics/xgorider2_rl.git
+[submodule "rig_tars_rl"]
+	path = src/tasks/tars
+	url = https://github.com/LuwuDynamics/rig_tars_rl.git
